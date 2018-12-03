@@ -1,5 +1,4 @@
 const assert = require('assert');
-// let runCallbackAgainstFile = require('../utils/runCbAgainstFileAsArray');
 let findSimilarBoxIds = require('./02-2-solution');
 
 describe('02-2-solution', () => {

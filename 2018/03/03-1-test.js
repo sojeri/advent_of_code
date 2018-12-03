@@ -1,5 +1,4 @@
 const assert = require('assert');
-// let runCallbackAgainstFile = require('../utils/runCbAgainstFileAsArray');
 let solution = require('./03-1-solution');
 
 describe('03-1-solution', () => {
