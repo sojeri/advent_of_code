@@ -6,8 +6,6 @@
 
 // FIXME: an inevitable improvement will be running tests for a specific module, maybe something like `npm test -- 01`
 
-// TODO: write a scaffolding util to create initial solution & test files with a couple failing tests
-
 end secrets -->
 
 ### `npm test` will run all tests
@@ -24,5 +22,4 @@ example output:
 
 * /path/to/2018/README.md
 Line 7:    ☂ FIXME inevitable improvement will be running tests for a specific module, maybe something like `npm test -- 01`
-Line 9:   ✓ TODO write a scaffolding util to create initial solution & test files with a couple failing tests
 ```

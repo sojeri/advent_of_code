@@ -27,6 +27,9 @@ function updateContent(buffer, name) {
 const templateFiles = ['solution.js', 'test.js']
 const templateVariants = ['-1-', '-2-']
 
+// TODO: better error handling
+// TODO: this should have tests to expose what it does
+// TODO: a version that takes in the directory name as an arg and creates it with contents
 function scaffoldCurrentDirectory() {
     // get current directory number (eg 04)
     let name = getCurrentDirectory();
