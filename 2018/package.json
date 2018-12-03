@@ -1,8 +1,10 @@
 {
     "devDependencies": {
-        "mocha": "^5.2.0"
+        "mocha": "^5.2.0",
+        "notes": "0.0.4"
     },
     "scripts": {
+        "notes": "./node_modules/notes/bin/notes",
         "test": "./node_modules/mocha/bin/mocha '{,!(node_modules)/**}/*test.js'"
     }
 }
