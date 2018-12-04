@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function runCallbackAgainstFileAsArray(callback, fileName) {
+function runCallbackAgainstFileAsArray(callback, fileName = 'input.txt') {
     let fileContents = fs.readFileSync(fileName);
     fileContents = fileContents.toString().split('\n');
     if (fileContents[fileContents.length-1] == '') {
