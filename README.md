@@ -1,4 +1,17 @@
-# advent of code 2018
+# advent of code
+
+<!--
+jump links
+- shout outs
+- helpingful commands
+    - running tests
+    - scaffolding new day
+    - grabbing notes from code
+-->
+
+## shout out
+
+to my favorite piece of code so far: 2018 day 4 ( 53d693a7a51466daf8162f88b2898dbcb706048f ).
 
 ## npm scripts
 
@@ -15,16 +28,17 @@ describe.only('the set of tests I want to run now', () => {
 });
 ```
 
-### `npm run notes` will grab important comments from code-- like the above
+### `npm run notes` will grab important comments from code
 
 example output:
 
 ```
 >> npm run notes
 
-> @ notes /path/to/2018
+> @ notes /path/to/root
 > ./node_modules/notes/bin/notes
 
-* /path/to/2018/README.md
-Line 7:    ☂ FIXME inevitable improvement will be running tests for a specific module, maybe something like `npm test -- 01`
+* /path/to/utils/js/scaffoldCurrentDirectory.js
+  Line 40:   ✓ TODO better error handling
+  Line 41:   ✓ TODO this should have tests to expose what it does
 ```
