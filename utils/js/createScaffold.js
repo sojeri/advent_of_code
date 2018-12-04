@@ -24,7 +24,7 @@ function validateNumberRange(value, valueName, min, max) {
     }
 }
 
-validateNumberRange(aocYear, 'year', 2000, 2100);
+validateNumberRange(aocYear, 'year', 2015, 2100);
 validateNumberRange(aocDay, 'day', 1, 25);
 
 if (aocDay.length < 2) {
