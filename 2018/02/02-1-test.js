@@ -63,7 +63,7 @@ describe('02-1-solution', () => {
         it('should return 12 for input matching above', () => {
             let testFileChecksum = runCallbackAgainstFile(
                 generateChecksum,
-                '02/02-1-testFile.txt');
+                '2018/02/02-1-testFile.txt');
             assert.equal(testFileChecksum, 12);
         });
     });

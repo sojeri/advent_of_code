@@ -7,6 +7,6 @@
         "fixInit": "chmod -x ./utils/js/createScaffold.js",
         "init": "./utils/js/createScaffold.js",
         "notes": "./node_modules/notes/bin/notes",
-        "test": "./node_modules/mocha/bin/mocha '{,!(node_modules)/**}/*test.js'"
+        "test": "./node_modules/mocha/bin/mocha '{,!(node_modules)/**!(templates)}/*test.js'"
     }
 }

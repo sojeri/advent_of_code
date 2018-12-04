@@ -16,19 +16,19 @@ function doNothing(array) {
 describe('utils', () => {
     describe('runCbAgainstFileAsArray', () => {
         it('should return the file contents as an array', () => {
-            let result = runCbAgainstFileAsArray(doNothing, 'utils/noTrailingNewLine.txt');
+            let result = runCbAgainstFileAsArray(doNothing, 'utils/js/noTrailingNewLine.txt');
             assert.equal(result.length, 3);
             assert.equal(result.pop(), '3');
         });
     
         it('should not include a trailing new line', () => {
-            let result = runCbAgainstFileAsArray(doNothing, 'utils/trailingNewLine.txt');
+            let result = runCbAgainstFileAsArray(doNothing, 'utils/js/trailingNewLine.txt');
             assert.equal(result.length, 3);
             assert.equal(result.pop(), '3');
         });
     
         it('should run the callback fn against the array', () => {
-            assert.equal(runCbAgainstFileAsArray(total, 'utils/trailingNewLine.txt'), 6);
+            assert.equal(runCbAgainstFileAsArray(total, 'utils/js/trailingNewLine.txt'), 6);
         });
     });
 });

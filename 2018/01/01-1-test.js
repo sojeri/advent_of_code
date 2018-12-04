@@ -4,6 +4,10 @@ let {
     parseFrequencyChangesFromFile
 } = require('./01-1-solution');
 
+function getFilePath(fileName) {
+    return `2018/01/${fileName}`;
+}
+
 describe('01-1-solution', () => {
     describe('examples from problem statement', () => {
         it('should return 3 for input +1 +1 +1', () => {
@@ -25,19 +29,19 @@ describe('01-1-solution', () => {
 
     describe('examples from problem statement as files', () => {
         it('should return 3 for input +1 +1 +1', () => {
-            assert.equal(parseFrequencyChangesFromFile('01/01-1-111.txt'), 3);
+            assert.equal(parseFrequencyChangesFromFile(getFilePath('01-1-111.txt')), 3);
         });
         
         it('should return 0 for input +1 +1 -2', () => {
-            assert.equal(parseFrequencyChangesFromFile('01/01-1-112.txt'), 0);
+            assert.equal(parseFrequencyChangesFromFile(getFilePath('01-1-112.txt')), 0);
         });
         
         it('should return -6 for input -1 -2 -3', () => {
-            assert.equal(parseFrequencyChangesFromFile('01/01-1-123.txt'), -6);
+            assert.equal(parseFrequencyChangesFromFile(getFilePath('01-1-123.txt')), -6);
         });
         
         it('should return 3 for input +1 -2 +3 +1', () => {
-            assert.equal(parseFrequencyChangesFromFile('01/01-1-1231.txt'), 3);
+            assert.equal(parseFrequencyChangesFromFile(getFilePath('01-1-1231.txt')), 3);
         });
     });
 });
