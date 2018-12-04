@@ -1,19 +1,29 @@
 const fs = require('fs');
 
-function createOutputPath(pathString) {
+const dirSeparator = '/';
+
+function tryCreatePath(pathString) {
     try {
-        fs.mkdirSync(pathString);
+        fs.mkdirSync(pathString)
     } catch (err) {
-        if (err.code !== 'EEXIST') throw err;
+        if (err.code !== 'EEXIST') throw err
+    }
+}
+
+function createOutputPath(pathArray) {
+    let currentPath = '';
+    for (let i = 0; i < pathArray.length; i++) {
+        currentPath += pathArray[i] + dirSeparator;
+        tryCreatePath(currentPath);
     }
 }
 
 let path;
 function getTemplatePath() {
     if (!path) {
-        let currentPath = process.cwd().split('/');
+        let currentPath = process.cwd().split(dirSeparator);
         currentPath.push(...['utils', 'js', 'templates', ''])
-        path = currentPath.join('/');
+        path = currentPath.join(dirSeparator);
     }
     return path;
 }
@@ -31,9 +41,9 @@ const templateVariants = ['-1-', '-2-']
 // TODO: this should have tests to expose what it does
 function scaffoldCurrentDirectory(prefix) {
     // get current directory number (eg 04)
-    let path = prefix.split('/');
+    let path = prefix.split(dirSeparator);
     let day = path.pop();
-    createOutputPath(path.join('/'));
+    createOutputPath(path);
 
     // read template file, looping through lines
     templateFiles.forEach(fileName => {
@@ -52,9 +62,9 @@ function scaffoldCurrentDirectory(prefix) {
                 ws.end();
             });
         });
-        console.log(`scaffolded ${prefix}'s ${templateFiles}`);
     });
-
+    
+    console.log(`scaffolded ${path.join(dirSeparator)}'s ${templateFiles}`);
 }
 
 module.exports = scaffoldCurrentDirectory;

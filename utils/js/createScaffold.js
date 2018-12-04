@@ -26,4 +26,9 @@ function validateNumberRange(value, valueName, min, max) {
 
 validateNumberRange(aocYear, 'year', 2000, 2100);
 validateNumberRange(aocDay, 'day', 1, 25);
+
+if (aocDay.length < 2) {
+    aocDay = `0${aocDay}`;
+}
+
 scaffoldCurrentDirectory(`${aocYear}/${aocDay}/${aocDay}`);
