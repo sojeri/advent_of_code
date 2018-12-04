@@ -8,6 +8,10 @@
 
 end secrets -->
 
+### `npm run init -- <year> <day>` will scaffold the solution for year/day
+
+you may need to run `npm run fixInit` to give the script permissions.
+
 ### `npm test` will run all tests
 
 ### `npm run notes` will grab important comments from code-- like the above
