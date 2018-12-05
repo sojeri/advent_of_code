@@ -1,4 +1,8 @@
 let levels = [1];
+function getLevels() {
+    return levels;
+}
+
 function calculateMaxValuePerLevel(level) {
     if (!levels[level]) {
         let prevMax = calculateMaxValuePerLevel(level - 1);
@@ -20,6 +24,8 @@ function findLevelContainingVal(val) {
 }
 
 /**
+ * misc notes leftover from my making sure findStepsFromOrigin's logic would work.
+ * ---
  * levels = [1, 9, 25]
  * ---
  * val = 2; level = 1; maxVal = 9;
@@ -37,6 +43,12 @@ function findLevelContainingVal(val) {
  * m = 23; m = 19; m = 15; m = 11; m = 7; break
  * maxVal => 22; maxSteps = 3;
  * m = 22; m = 18; m = 14; m = 10; return 3
+ */
+
+/**
+ * How many steps are required to carry the data from the square
+ * identified in your puzzle input all the way to the access port?
+ * @param {*} val 
  */
 function findStepsFromOrigin(val) {
     let level = findLevelContainingVal(val);
@@ -65,6 +77,8 @@ function findStepsFromOrigin(val) {
 }
 
 module.exports = {
-    calculateMaxValuePerLevel: calculateMaxValuePerLevel,
-    findStepsFromOrigin: findStepsFromOrigin,
+    calculateMaxValuePerLevel,
+    findStepsFromOrigin,
+    findLevelContainingVal,
+    getLevels,
 };

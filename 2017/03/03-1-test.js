@@ -26,5 +26,9 @@ describe.only('03-1-solution', () => {
         it('should return 31 for input 1024', () => {
             assert.equal(findStepsFromOrigin(1024), 31);
         });
+
+        it('should return 438 for puzzle input', () => {
+            assert.equal(findStepsFromOrigin(265149), 438);
+        });
     });
 });
