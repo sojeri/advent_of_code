@@ -1,59 +1,24 @@
-function getNewMax(array) {
-    let max = array[0];
-    let maxIndex = 0;
-    array.forEach((val, i) => {
-        if (val > max) { max = val; maxIndex = i; }
-    });
-    return maxIndex;
-}
+let { countRedistributionCycles, getNewMax } = require('./06-1-solution');
 
 /**
- * counts how many redistrubition cycles are required before the debugger
- * sees a configuration that is a repeat.
- * per spec defined in https://adventofcode.com/2017/day/6
+ * counts how many distinct redistrubition cycles are part of the infinite loop that
+ * results after the debugger has seen its first repeat configuration.
+ * per spec defined in https://adventofcode.com/2017/day/6#part2
  * @param {*} banks 
  */
-function countRedistributionCycles(banks) {
-    // sanitize input
-    banks = banks.split('	').map(str => Number(str));
-
-    let shouldRunAnotherCycle = true;
-    let foundFirstRepeat = false;
-    let seenConfigurations = {};
+function findFirstRepeatThenCountInifiniteLoop(banks) {
     let count = 0;
-
-    while (shouldRunAnotherCycle) {
+    
+    function isInfiniteLoopCounted(knownConfigs, config) {
+        if (knownConfigs[config] == 2) return false;
+        
+        knownConfigs[config] = 2;
         count++;
-        let maxIndex = getNewMax(banks);
-        let valueToRedistribute = banks[maxIndex];
-        banks[maxIndex] = 0;
-
-        let n = maxIndex;
-        while (valueToRedistribute > 0) {
-            n++;
-            let i = n % banks.length;
-
-            // carry val
-            banks[i]++;
-            valueToRedistribute--;
-        }
-
-        let currentConfiguration = banks.join();
-        if (!seenConfigurations[currentConfiguration]) {
-            seenConfigurations[currentConfiguration] = 1;
-        } else if (!foundFirstRepeat) {
-            seenConfigurations[currentConfiguration]++;
-            foundFirstRepeat = true;
-            count = 0;
-        } else {
-            seenConfigurations[currentConfiguration]++;
-            if (seenConfigurations[currentConfiguration] == 3) {
-                shouldRunAnotherCycle = false;
-            }
-        }
+        return true;
     }
 
+    countRedistributionCycles(banks, isInfiniteLoopCounted);
     return count;
 }
 
-module.exports = countRedistributionCycles;
+module.exports = findFirstRepeatThenCountInifiniteLoop;
