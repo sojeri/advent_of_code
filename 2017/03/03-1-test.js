@@ -1,7 +1,7 @@
 const assert = require('assert');
 let { findStepsFromOrigin } = require('./03-1-solution');
 
-describe.only('03-1-solution', () => {
+describe('03-1-solution', () => {
     describe('findStepsFromOrigin', () => {
         it('should return 0 for input 1', () => {
             assert.equal(findStepsFromOrigin(1), 0);

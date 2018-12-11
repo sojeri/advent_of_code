@@ -1,7 +1,7 @@
 const assert = require('assert');
 let solution = require('./03-2-solution');
 
-describe.only('03-2-solution', () => {
+describe('03-2-solution', () => {
     describe('solution', () => {
         it('should return 10 for input 6', () => {
             assert.equal(solution(6), 10);

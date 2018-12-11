@@ -2,7 +2,7 @@ const assert = require('assert');
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray');
 let { calculateCompoundSizeAfterReaction } = require('./05-1-solution');
 
-describe.only('05-1-solution', () => {
+describe('05-1-solution', () => {
     describe('solution', () => {
         it('should return 0 for input aA', () => {
             assert.equal(calculateCompoundSizeAfterReaction('aA'), 0);

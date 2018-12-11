@@ -2,7 +2,7 @@ const assert = require('assert');
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray');
 let { areWordsUnique, countValidPassphrases } = require('./04-1-solution');
 
-describe.only('04-1-solution', () => {
+describe('04-1-solution', () => {
     describe('areWordsUnique', () => {
         it('should return true for input with no repeating words', () => {
             assert.equal(areWordsUnique('aa bb cc dd ee'), true);

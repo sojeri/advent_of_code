@@ -2,7 +2,7 @@ const assert = require('assert');
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray');
 let { areNoWordsAnagrams, countValidPassphrasesV2 } = require('./04-2-solution');
 
-describe.only('04-2-solution', () => {
+describe('04-2-solution', () => {
     describe('areNoWordsAnagrams', () => {
         it('should return true for input containing no words that are anagrams of each other', () => {
             assert.equal(areNoWordsAnagrams('abcde fghij'), true);

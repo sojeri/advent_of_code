@@ -1,7 +1,7 @@
 const assert = require('assert');
 let {getPowerForCoordinate, getLargestPower3x3Cell} = require('./11-1-solution');
 
-describe.only('11-1-solution', () => {
+describe('11-1-solution', () => {
     describe('getPowerForCoordinate', () => {
         it('should return 4 for example 3,5 8', () => {
             assert.equal(getPowerForCoordinate(3, 5, 8), 4);

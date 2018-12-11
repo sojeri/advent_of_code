@@ -2,7 +2,7 @@ const assert = require('assert');
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray');
 let solution = require('./05-2-solution');
 
-describe.only('05-2-solution', () => {
+describe('05-2-solution', () => {
     describe('solution', () => {
         it('should return 4 for input dabAcCaCBAcCcaDA', () => {
             assert.equal(solution('dabAcCaCBAcCcaDA'), 4);

@@ -1,7 +1,7 @@
 const assert = require('assert');
 let {getLargestPowerCell} = require('./11-2-solution');
 
-describe.only('11-2-solution', () => {
+describe('11-2-solution', () => {
     describe('getLargestPowerCell', () => {
         it('should return 90,269,16 for grid #18', () => {
             assert.equal(getLargestPowerCell(18), '90,269,16');
