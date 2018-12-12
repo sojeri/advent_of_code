@@ -47,7 +47,14 @@ function scaffoldCurrentDirectory(prefix) {
 
     // read template file, looping through lines
     templateFiles.forEach(fileName => {
-        let writeStreams = templateVariants.map(v => fs.createWriteStream(prefix + v + fileName)) ;
+        let writeFileNames = templateVariants.map(v => prefix + v + fileName);
+        writeFileNames.forEach(f => {
+            if (fs.existsSync(f)) {
+                throw new Error(`directory previously scaffolded: ${f} already exists.`);
+            }
+        });
+        
+        let writeStreams = writeFileNames.map(f => fs.createWriteStream(f)) ;
         let readStream = fs.createReadStream(getTemplatePath() + fileName);
         readStream.on('data', (chunk) => {
             // - for each line, write to scaffold file in current directory
