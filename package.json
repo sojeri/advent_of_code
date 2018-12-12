@@ -1,12 +1,18 @@
 {
     "devDependencies": {
         "mocha": "^5.2.0",
-        "notes": "0.0.4"
+        "notes": "0.0.4",
+        "sinon": "^7.2.2"
     },
     "scripts": {
         "fixInit": "chmod -x ./utils/js/createScaffold.js",
         "init": "./utils/js/createScaffold.js",
         "notes": "./node_modules/notes/bin/notes",
         "test": "./node_modules/mocha/bin/mocha '{,!(node_modules)/**!(templates)}/*test.js'"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sojeri/advent_of_code.git"
+    },
+    "author": "Jeri Sommers <sojeri@uw.edu>",
 }
