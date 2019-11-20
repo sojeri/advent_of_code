@@ -1,4 +1,4 @@
-// TODO: implement @@
+// TODO: implement @@solution
 function solution() {
 
 }
