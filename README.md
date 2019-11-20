@@ -13,13 +13,13 @@ jump links
 
 to my favorite piece of code so far: 2018 day 4 ( 53d693a7a51466daf8162f88b2898dbcb706048f ).
 
-## npm scripts
+## scripts
 
-### `npm run init -- <year> <day>` will scaffold the solution for year/day
+### `yarn new <year> <day>` will scaffold the solution for year/day
 
-you may need to run `npm run fixInit` to give the script permissions.
+you may need to run `yarn fixNew` to give the script permissions.
 
-### `npm test` will run all tests
+### `yarn test` will run all tests
 
 to run only a specific set of tests, use `.only` modifer on any level of mocha block, eg
 ```js
@@ -28,12 +28,12 @@ describe.only('the set of tests I want to run now', () => {
 });
 ```
 
-### `npm run notes` will grab important comments from code
+### `yarn notes` will grab important comments from code
 
 example output:
 
 ```
->> npm run notes
+>> yarn notes
 
 > @ notes /path/to/root
 > ./node_modules/notes/bin/notes

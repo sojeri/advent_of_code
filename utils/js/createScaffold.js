@@ -2,16 +2,38 @@
 
 const scaffoldCurrentDirectory = require('./scaffoldCurrentDirectory');
 
-let args = process.argv.slice(2);
-let aocYear = args[0];
-let aocDay = args[1];
+const exampleCommand = '`yarn new 2017 01`';
+const exampleCommandWithPlaceholders = '`yarn new <year> <day>'
 
-const exampleCommand = '`npm run init -- 2017 01`';
-const exampleCommandWithPlaceholders = '`npm run init -- <year> <day>'
+function createScaffold() {
+    let args = process.argv.slice(2);
+    if (args.length <  2) {
+        console.log('You can use this command to scaffold a new directory:')
+        console.log(`    ${exampleCommandWithPlaceholders}`)
+        console.log(`    eg, ${ exampleCommand }`)
+
+        return
+    }
+
+    let aocYear = args[0];
+    let aocDay = args[1];
+
+    validateNumberRange(aocYear, 'year', 2015, 2100);
+    validateNumberRange(aocDay, 'day', 1, 25);
+
+    if (aocDay.length < 2) {
+        aocDay = `0${aocDay}`;
+    }
+
+    scaffoldCurrentDirectory(`${aocYear}/${aocDay}/${aocDay}`);
+}
+
+
+
 function validateNumberRange(value, valueName, min, max) {
     if (Number(value) == NaN) {
         throw new Error(`
-            npm run init should be called with a numeric ${valueName} value
+            yarn new should be called with a numeric ${valueName} value
             eg '${exampleCommand}' (${exampleCommandWithPlaceholders})`);
     }
 
@@ -24,11 +46,4 @@ function validateNumberRange(value, valueName, min, max) {
     }
 }
 
-validateNumberRange(aocYear, 'year', 2015, 2100);
-validateNumberRange(aocDay, 'day', 1, 25);
-
-if (aocDay.length < 2) {
-    aocDay = `0${aocDay}`;
-}
-
-scaffoldCurrentDirectory(`${aocYear}/${aocDay}/${aocDay}`);
+createScaffold()
