@@ -1,7 +1,7 @@
 const assert = require('assert');
 let {countRedistributionCycles} = require('./06-1-solution');
 
-describe.only('06-1-solution', () => {
+describe('06-1-solution', () => {
     describe('countRedistributionCycles', () => {
         it('should return 5 for example input', () => {
             assert.equal(countRedistributionCycles('0	2	7	0'), 5);

@@ -14,8 +14,8 @@ const returnArrayUnchanged = array => { return array };
 describe('runCbAgainstFileAsArray()', () => {
     const noTrailingNewLineFile = 'foo/bar/noTrailingNewLine.txt';
     const trailingNewLineFile = 'foo/baz/trailingNewLine.txt';
-    const noTrailingNewLine = new Buffer('1\n2\n3');
-    const trailingNewLine = new Buffer('1\n2\n3\n');
+    const noTrailingNewLine = Buffer.from('1\n2\n3');
+    const trailingNewLine = Buffer.from('1\n2\n3\n');
 
     it('should return the file contents as an array', () => {
         sinon.stub(fs, 'readFileSync').withArgs(noTrailingNewLineFile).returns(noTrailingNewLine);
