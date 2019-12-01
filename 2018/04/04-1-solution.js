@@ -1,14 +1,14 @@
-const guardIdRegex = /#\d+/;
-const sortByDate = (a, b) => a.date - b.date;
+const guardIdRegex = /#\d+/
+const sortByDate = (a, b) => a.date - b.date
 
-let processedDataStore = {};
+let processedDataStore = {}
 
 /**
  * retrieve the processed guard data.
  * this is needed in order for part2 to take advantage of part1's code. :)
  */
 function getProcessedDataStore() {
-    return processedDataStore;
+    return processedDataStore
 }
 
 /**
@@ -18,17 +18,19 @@ function getProcessedDataStore() {
  */
 function convertToFancyObject(logEntry) {
     // crazy date shenanigans
-    let date = new Date(Date.UTC(
-        Number(logEntry.slice(1,5)) + 500, // year: 1518 is before the dawn of js time
-        Number(logEntry.slice(6,8)) - 1, // month: js month is zero-index, because reasons
-        Number(logEntry.slice(9,11)), // day
-        Number(logEntry.slice(12,14)), // hour
-        Number(logEntry.slice(15,17)) // minute
-    ));
-    
-    let guardId = null;
+    let date = new Date(
+        Date.UTC(
+            Number(logEntry.slice(1, 5)) + 500, // year: 1518 is before the dawn of js time
+            Number(logEntry.slice(6, 8)) - 1, // month: js month is zero-index, because reasons
+            Number(logEntry.slice(9, 11)), // day
+            Number(logEntry.slice(12, 14)), // hour
+            Number(logEntry.slice(15, 17)) // minute
+        )
+    )
+
+    let guardId = null
     if (logEntry.indexOf('#') > -1) {
-        guardId = Number(guardIdRegex.exec(logEntry)[0].slice(1));
+        guardId = Number(guardIdRegex.exec(logEntry)[0].slice(1))
     }
 
     return {
@@ -44,9 +46,9 @@ function convertToFancyObject(logEntry) {
  * @param {*} guardId - the id of the guard
  */
 function createGuard(guardId) {
-    processedDataStore[guardId] = { totalSleep: 0, sleep: new Array(61), id: guardId };
+    processedDataStore[guardId] = { totalSleep: 0, sleep: new Array(61), id: guardId }
     for (let m = 0; m <= 60; m++) {
-        processedDataStore[guardId].sleep[m] = 0;   
+        processedDataStore[guardId].sleep[m] = 0
     }
 }
 
@@ -57,9 +59,9 @@ function createGuard(guardId) {
  * @param {*} whenAwakened - the time the guard woke up (in minutes)
  */
 function updateGuardSleepMinutes(guardId, whenFellAsleep, whenAwakened) {
-    processedDataStore[guardId].totalSleep += whenAwakened - whenFellAsleep;
+    processedDataStore[guardId].totalSleep += whenAwakened - whenFellAsleep
     for (let m = whenFellAsleep; m < whenAwakened; m++) {
-        processedDataStore[guardId].sleep[m] += 1;
+        processedDataStore[guardId].sleep[m] += 1
     }
 }
 
@@ -68,26 +70,21 @@ function updateGuardSleepMinutes(guardId, whenFellAsleep, whenAwakened) {
  * @param {*} logEntries - an unordered array of standardizes notes / log entries
  */
 function processClosetGraffiti(logEntries) {
-    let currentId, whenFellAsleep;
-    logEntries = logEntries.
-        map(convertToFancyObject).
-        sort(sortByDate);
-
+    let currentId, whenFellAsleep
+    logEntries = logEntries.map(convertToFancyObject).sort(sortByDate)
 
     logEntries.forEach(entry => {
-        let currentTime = entry.date.getMinutes();
+        let currentTime = entry.date.getMinutes()
         if (entry.isShiftChange) {
-            currentId = entry.guardId;
-            whenFellAsleep = 0;
-            if (processedDataStore[currentId] == undefined) createGuard(currentId);
-
+            currentId = entry.guardId
+            whenFellAsleep = 0
+            if (processedDataStore[currentId] == undefined) createGuard(currentId)
         } else if (entry.isGuardAsleep) {
-            whenFellAsleep = currentTime;
-    
+            whenFellAsleep = currentTime
         } else {
-            updateGuardSleepMinutes(currentId, whenFellAsleep, currentTime);
+            updateGuardSleepMinutes(currentId, whenFellAsleep, currentTime)
         }
-    });
+    })
 }
 
 /**
@@ -96,19 +93,19 @@ function processClosetGraffiti(logEntries) {
  * @returns the id of the guard who slept the most
  */
 function whoSleptTheMost() {
-    let maxSleep = -1;
-    let maxSleepId = -1;
-    
-    Object.keys(processedDataStore).forEach(id => {
-        let guard = processedDataStore[id];
-        let currentSleep = guard.totalSleep;
-        if (currentSleep > maxSleep) {
-            maxSleepId = id;
-            maxSleep = currentSleep;
-        }
-    });
+    let maxSleep = -1
+    let maxSleepId = -1
 
-    return maxSleepId;
+    Object.keys(processedDataStore).forEach(id => {
+        let guard = processedDataStore[id]
+        let currentSleep = guard.totalSleep
+        if (currentSleep > maxSleep) {
+            maxSleepId = id
+            maxSleep = currentSleep
+        }
+    })
+
+    return maxSleepId
 }
 
 /**
@@ -118,17 +115,17 @@ function whoSleptTheMost() {
  * @returns the guard's most commonly slept-through minute
  */
 function mostFrequentSnoozingMinute(guardId) {
-    let guard = processedDataStore[guardId];
-    let maxSleepMinute = -1;
-    let maxSleepCount = -1;
+    let guard = processedDataStore[guardId]
+    let maxSleepMinute = -1
+    let maxSleepCount = -1
     guard.sleep.forEach((count, minute) => {
         if (count > maxSleepCount) {
-            maxSleepCount = count;
-            maxSleepMinute = minute;
+            maxSleepCount = count
+            maxSleepMinute = minute
         }
     })
 
-    return maxSleepMinute;
+    return maxSleepMinute
 }
 
 /**
@@ -144,17 +141,17 @@ function mostFrequentSnoozingMinute(guardId) {
  * @returns a checksum that identifies the sleepiest guard
  */
 function generateChecksumForTheSleepiestGuard(closetNotes) {
-    processClosetGraffiti(closetNotes);
-    let maxSleepDurationId = whoSleptTheMost();
-    let mostCommonSleepMinute = mostFrequentSnoozingMinute(maxSleepDurationId);
-    processedDataStore = {};
+    processClosetGraffiti(closetNotes)
+    let maxSleepDurationId = whoSleptTheMost()
+    let mostCommonSleepMinute = mostFrequentSnoozingMinute(maxSleepDurationId)
+    processedDataStore = {}
 
-    return maxSleepDurationId * mostCommonSleepMinute;
+    return maxSleepDurationId * mostCommonSleepMinute
 }
 
 module.exports = {
     generateChecksumForTheSleepiestGuard,
     processClosetGraffiti,
     getProcessedDataStore,
-    mostFrequentSnoozingMinute
-};
+    mostFrequentSnoozingMinute,
+}

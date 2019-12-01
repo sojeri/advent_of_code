@@ -18,29 +18,31 @@ The system's full passphrase list is available as your puzzle input. How many pa
  * @param isValidCb an optional callback to use to validate the passphrases
  */
 function countValidPassphrases(passphraseList, isValidCb = areWordsUnique) {
-    let count = 0;
-    passphraseList.forEach(p => { if (isValidCb(p)) count++; });
-    return count;
+    let count = 0
+    passphraseList.forEach(p => {
+        if (isValidCb(p)) count++
+    })
+    return count
 }
 
 /**
  * returns true if a passphrase is comprised of unique words and false otherwise
  */
 function areWordsUnique(passphraseString) {
-    let unverifiedWords = passphraseString.split(' ');
+    let unverifiedWords = passphraseString.split(' ')
     let alreadyContains = {}
     for (let w = 0; w < unverifiedWords.length; w++) {
-        let word = unverifiedWords[w];
+        let word = unverifiedWords[w]
         if (alreadyContains[word]) {
-            return false;
+            return false
         } else {
-            alreadyContains[word] = true;
+            alreadyContains[word] = true
         }
     }
-    return true;
+    return true
 }
 
 module.exports = {
     areWordsUnique,
     countValidPassphrases,
-};
+}

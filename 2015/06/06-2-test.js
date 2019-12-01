@@ -5,26 +5,30 @@ let solution = require('./06-2-solution')
 describe('06-2-solution', () => {
     describe('parseSantasPlan', () => {
         it('should return 18 for example input', () => {
-            let result = runCallbackAgainstFile(
-                solution.parseSantasPlan,
-                '2015/06/example.txt')
+            let result = runCallbackAgainstFile(solution.parseSantasPlan, '2015/06/example.txt')
             assert.equal(result, 18)
         })
 
         it('should return 14110788 for puzzle input', () => {
-            let result = runCallbackAgainstFile(
-                solution.parseSantasPlan,
-                '2015/06/input.txt')
+            let result = runCallbackAgainstFile(solution.parseSantasPlan, '2015/06/input.txt')
             assert.equal(result, 14110788)
         })
     })
 
     describe('countTotalLuminosity', () => {
         it('sums numeric values in a grid', () => {
-            let mockGrid = [[0, 1, 1], [0, 0, 0], [0, 0, 0]]
+            let mockGrid = [
+                [0, 1, 1],
+                [0, 0, 0],
+                [0, 0, 0],
+            ]
             assert.equal(solution.countTotalLuminosity(mockGrid), 2)
-            
-            mockGrid = [[0, 1, 1], [17, 0, 0], [0, 0, 0]]
+
+            mockGrid = [
+                [0, 1, 1],
+                [17, 0, 0],
+                [0, 0, 0],
+            ]
             assert.equal(solution.countTotalLuminosity(mockGrid), 19)
         })
     })

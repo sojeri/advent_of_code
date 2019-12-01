@@ -10,7 +10,7 @@ let { countTruths } = require('../../utils/js/countTruths')
  */
 function parseSantasPlan(instructions) {
     let lightGrid = createGrid(1000)
-    
+
     for (let i = 0; i < instructions.length; i++) {
         lightGrid = handleInstruction(lightGrid, instructions[i])
     }
@@ -24,7 +24,8 @@ function parseSantasPlan(instructions) {
  * @param {*} size the size of the grid to create (eg 6 for a 6x6 square)
  * @param {*} defaultValue the value to insert at each position in the grid
  */
-function createGrid(size, defaultValue=false) { // defaultValue for part2
+function createGrid(size, defaultValue = false) {
+    // defaultValue for part2
     grid = []
     for (let x = 0; x < size; x++) {
         let row = []
@@ -82,7 +83,7 @@ function handleInstruction(grid, instruction) {
  * parses a string coordinate pair
  * @param {*} coordString a coordinate string, eg '44,600'
  * @returns a coordinate pair, eg { x: 44, y: 600 }
- * 
+ *
  * @usage
  * let coord = parseCoord('44,600') // returns { x: 44, y: 600 }
  * let x, y = coord[0], coord[1]

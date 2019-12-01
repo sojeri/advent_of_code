@@ -12,7 +12,7 @@ let { createGrid, parseCoord } = require('./06-1-solution')
  */
 function parseSantasPlan(instructions) {
     let lightGrid = createGrid(1000, 0)
-    
+
     for (let i = 0; i < instructions.length; i++) {
         lightGrid = handleInstruction(lightGrid, instructions[i])
     }

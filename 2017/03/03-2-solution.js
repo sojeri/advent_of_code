@@ -1,26 +1,26 @@
-const { findLevelContainingVal, getLevels } = require('./03-1-solution');
+const { findLevelContainingVal, getLevels } = require('./03-1-solution')
 
 /**
  * creates an n by n matrix
  * @param {*} n
  */
 function createGrid(n) {
-    let newGrid = new Array(n);
+    let newGrid = new Array(n)
     for (let i = 0; i < n; i++) {
-        newGrid[i] = new Array(n);
+        newGrid[i] = new Array(n)
     }
-    return newGrid;
+    return newGrid
 }
 
-let grid;
-let valueToBeat;
-let lastCalculatedValue = -1;
+let grid
+let valueToBeat
+let lastCalculatedValue = -1
 
 /** returns a flag indicating whether the lastCalculatedValue is still below valueToBeat */
-const shouldProcessingContinue = () => lastCalculatedValue <= valueToBeat;
+const shouldProcessingContinue = () => lastCalculatedValue <= valueToBeat
 
-let currentLevelMinIndex;
-let currentLevelMaxIndex;
+let currentLevelMinIndex
+let currentLevelMaxIndex
 
 /**
  * updates module state related to the current grid level
@@ -28,8 +28,8 @@ let currentLevelMaxIndex;
  * @param {*} levelMaxIndex - the minIndex to set in module state
  */
 function updateGridLevel(levelMinIndex, levelMaxIndex) {
-    currentLevelMinIndex = levelMinIndex;
-    currentLevelMaxIndex = levelMaxIndex;
+    currentLevelMinIndex = levelMinIndex
+    currentLevelMaxIndex = levelMaxIndex
 }
 
 /**
@@ -39,7 +39,7 @@ function updateGridLevel(levelMinIndex, levelMaxIndex) {
  * @returns true if i is within the grid and false otherwise
  */
 function isValidIndex(i) {
-    return currentLevelMinIndex <= i && i <= currentLevelMaxIndex;
+    return currentLevelMinIndex <= i && i <= currentLevelMaxIndex
 }
 
 /**
@@ -50,10 +50,10 @@ function isValidIndex(i) {
  */
 function getNumberFromGrid(x, y) {
     if (isValidIndex(x) && isValidIndex(y) && grid[x][y] != undefined) {
-        return grid[x][y];
+        return grid[x][y]
     }
-    
-    return 0;
+
+    return 0
 }
 
 /**
@@ -61,15 +61,15 @@ function getNumberFromGrid(x, y) {
  * @param {*} coordinate - the coordinate pair
  */
 function calculateAndStoreValue(coordinate) {
-    let sum = 0;
-    let x = coordinate[0];
-    let y = coordinate[1];
-    for (let i = x-1; i <= x+1; i++) {
-        for (let j = y-1; j <= y+1; j++) {
-            sum += getNumberFromGrid(i, j);
+    let sum = 0
+    let x = coordinate[0]
+    let y = coordinate[1]
+    for (let i = x - 1; i <= x + 1; i++) {
+        for (let j = y - 1; j <= y + 1; j++) {
+            sum += getNumberFromGrid(i, j)
         }
     }
-    grid[x][y] = lastCalculatedValue = sum;
+    grid[x][y] = lastCalculatedValue = sum
 }
 
 /**
@@ -83,11 +83,8 @@ function calculateAndStoreValue(coordinate) {
  */
 function processEdge(coordinate, shouldProcessEdge, getNextCoordinate) {
     while (shouldProcessingContinue() && shouldProcessEdge(coordinate)) {
-        calculateAndStoreValue(coordinate);
-        processEdge(
-            getNextCoordinate(coordinate),
-            shouldProcessEdge,
-            getNextCoordinate);
+        calculateAndStoreValue(coordinate)
+        processEdge(getNextCoordinate(coordinate), shouldProcessEdge, getNextCoordinate)
     }
 }
 
@@ -97,8 +94,14 @@ function processEdge(coordinate, shouldProcessEdge, getNextCoordinate) {
 function processRightEdge() {
     processEdge(
         [currentLevelMaxIndex, currentLevelMaxIndex - 1], // lowest value is always one up from bottom right corner
-        c => { return c[1] > currentLevelMinIndex; }, // right edge ends when y meets top edge
-        c => { c[1]--; return c; }); // traverse towards top edge
+        c => {
+            return c[1] > currentLevelMinIndex
+        }, // right edge ends when y meets top edge
+        c => {
+            c[1]--
+            return c
+        }
+    ) // traverse towards top edge
 }
 
 /**
@@ -108,8 +111,14 @@ function processRightEdge() {
 function processTopEdge() {
     processEdge(
         [currentLevelMaxIndex, currentLevelMinIndex],
-        c => { return c[0] > currentLevelMinIndex; }, // top edge ends when x meets left edge
-        c => { c[0]--; return c; }); // traverse towards left edge
+        c => {
+            return c[0] > currentLevelMinIndex
+        }, // top edge ends when x meets left edge
+        c => {
+            c[0]--
+            return c
+        }
+    ) // traverse towards left edge
 }
 
 /**
@@ -119,8 +128,14 @@ function processTopEdge() {
 function processLeftEdge() {
     processEdge(
         [currentLevelMinIndex, currentLevelMinIndex],
-        c => { return c[1] < currentLevelMaxIndex; }, // left edge ends when y meets bottom edge
-        c => { c[1]++; return c; }); // traverse towards bottom edge
+        c => {
+            return c[1] < currentLevelMaxIndex
+        }, // left edge ends when y meets bottom edge
+        c => {
+            c[1]++
+            return c
+        }
+    ) // traverse towards bottom edge
 }
 
 /**
@@ -130,42 +145,48 @@ function processLeftEdge() {
 function processBottomEdge() {
     processEdge(
         [currentLevelMinIndex, currentLevelMaxIndex],
-        c => { return c[0] <= currentLevelMaxIndex; }, // highest value is always bottom right corner
-        c => { c[0]++; return c; }); // traverse towards right edge
+        c => {
+            return c[0] <= currentLevelMaxIndex
+        }, // highest value is always bottom right corner
+        c => {
+            c[0]++
+            return c
+        }
+    ) // traverse towards right edge
 }
 
 /**
- * 
- * @param {*} val 
+ *
+ * @param {*} val
  */
 function findFirstValueGreaterThanVal(val) {
-    let level = findLevelContainingVal(val);
-    let levels = getLevels();
-    let gridSize = Math.sqrt(levels[level]) + 2;
-    let midpoint = Math.floor(gridSize / 2);
+    let level = findLevelContainingVal(val)
+    let levels = getLevels()
+    let gridSize = Math.sqrt(levels[level]) + 2
+    let midpoint = Math.floor(gridSize / 2)
 
-    grid = createGrid(gridSize);
-    valueToBeat = val;
+    grid = createGrid(gridSize)
+    valueToBeat = val
 
-    const getMinIndex = level => midpoint - level;
-    const getMaxIndex = level => midpoint + level;
+    const getMinIndex = level => midpoint - level
+    const getMaxIndex = level => midpoint + level
 
     // insert starting value
-    grid[midpoint][midpoint] = 1;
+    grid[midpoint][midpoint] = 1
 
-    let currentLevel = 1;
+    let currentLevel = 1
     while (shouldProcessingContinue()) {
         updateGridLevel(getMinIndex(currentLevel), getMaxIndex(currentLevel))
 
-        processRightEdge();
-        processTopEdge();
-        processLeftEdge();
-        processBottomEdge();
+        processRightEdge()
+        processTopEdge()
+        processLeftEdge()
+        processBottomEdge()
 
-        currentLevel++;
+        currentLevel++
     }
 
-    return lastCalculatedValue;
+    return lastCalculatedValue
 }
 
-module.exports = findFirstValueGreaterThanVal;
+module.exports = findFirstValueGreaterThanVal

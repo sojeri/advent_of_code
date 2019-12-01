@@ -29,22 +29,22 @@ function isNiceString(str) {
                 if (char == 'b') {
                     return false
                 }
-                break;
+                break
             case 'c':
                 if (char == 'd') {
                     return false
                 }
-                break;
+                break
             case 'p':
                 if (char == 'q') {
                     return false
                 }
-                break;
+                break
             case 'x':
                 if (char == 'y') {
                     return false
                 }
-                break;
+                break
         }
 
         prevChar = char

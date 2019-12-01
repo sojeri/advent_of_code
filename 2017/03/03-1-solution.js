@@ -1,26 +1,26 @@
-let levels = [1];
+let levels = [1]
 function getLevels() {
-    return levels;
+    return levels
 }
 
 function calculateMaxValuePerLevel(level) {
     if (!levels[level]) {
-        let prevMax = calculateMaxValuePerLevel(level - 1);
-        let sqrt = Math.sqrt(prevMax) + 2;
-        levels[level] = sqrt * sqrt;
+        let prevMax = calculateMaxValuePerLevel(level - 1)
+        let sqrt = Math.sqrt(prevMax) + 2
+        levels[level] = sqrt * sqrt
     }
-    return levels[level];
+    return levels[level]
 }
 
 function findLevelContainingVal(val) {
-    let currentLevel = 0;
-    let maxValPerCurrentLevel = calculateMaxValuePerLevel(currentLevel);
+    let currentLevel = 0
+    let maxValPerCurrentLevel = calculateMaxValuePerLevel(currentLevel)
     while (maxValPerCurrentLevel < val) {
-        currentLevel++;
-        maxValPerCurrentLevel = calculateMaxValuePerLevel(currentLevel);
+        currentLevel++
+        maxValPerCurrentLevel = calculateMaxValuePerLevel(currentLevel)
     }
 
-    return currentLevel;
+    return currentLevel
 }
 
 /**
@@ -48,32 +48,32 @@ function findLevelContainingVal(val) {
 /**
  * How many steps are required to carry the data from the square
  * identified in your puzzle input all the way to the access port?
- * @param {*} val 
+ * @param {*} val
  */
 function findStepsFromOrigin(val) {
-    let level = findLevelContainingVal(val);
-    let maxVal = levels[level];
-    let edgeSize = Math.sqrt(maxVal) - 1;
-    
-    let minVal = levels[level-1] + 1;
-    let stepsFromOrigin = level * 2;
-    let hitMidpoint = false;
+    let level = findLevelContainingVal(val)
+    let maxVal = levels[level]
+    let edgeSize = Math.sqrt(maxVal) - 1
+
+    let minVal = levels[level - 1] + 1
+    let stepsFromOrigin = level * 2
+    let hitMidpoint = false
     while (maxVal >= minVal) {
         for (let m = maxVal; m >= minVal; m = m - edgeSize) {
-            if (m == val) return stepsFromOrigin;
+            if (m == val) return stepsFromOrigin
         }
 
         if (hitMidpoint) {
-            stepsFromOrigin++;
+            stepsFromOrigin++
         } else {
-            stepsFromOrigin--;
-            if (stepsFromOrigin == level) hitMidpoint = true;
+            stepsFromOrigin--
+            if (stepsFromOrigin == level) hitMidpoint = true
         }
-        
-        maxVal--;
+
+        maxVal--
     }
 
-    return 0;
+    return 0
 }
 
 module.exports = {
@@ -81,4 +81,4 @@ module.exports = {
     findStepsFromOrigin,
     findLevelContainingVal,
     getLevels,
-};
+}

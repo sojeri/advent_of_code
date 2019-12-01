@@ -1,20 +1,18 @@
 function sumRepeatingDigits(string) {
     if (Array.isArray(string)) {
-        return sumRepeatingDigits(string[0]);
+        return sumRepeatingDigits(string[0])
     }
-    let sum = 0;
-    let offset = string.length / 2;
+    let sum = 0
+    let offset = string.length / 2
     for (let i = 0; i < string.length; i++) {
-        let first = Number(string[i]);
-        let second = Number(string[(i + offset) % string.length]);
+        let first = Number(string[i])
+        let second = Number(string[(i + offset) % string.length])
         if (first == second) {
-            sum += first;
+            sum += first
         }
     }
-    
-    return sum;
+
+    return sum
 }
 
-
-
-module.exports = sumRepeatingDigits;
+module.exports = sumRepeatingDigits

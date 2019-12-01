@@ -1,7 +1,7 @@
 /**
  * calculates the floor Santa needs to go to given a set of instructions.
  * full spec: https://adventofcode.com/2015/day/1
- * @param {*} instruction 
+ * @param {*} instruction
  */
 function calculateFloor(instruction) {
     // '(' = +
@@ -13,10 +13,10 @@ function calculateFloor(instruction) {
 
     for (i = 0; i < instruction.length; i++) {
         char = instruction[i]
-        floor += (char == '(') ? 1 : -1
+        floor += char == '(' ? 1 : -1
     }
 
     return floor
 }
 
-module.exports = calculateFloor;
+module.exports = calculateFloor

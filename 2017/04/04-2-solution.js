@@ -1,22 +1,27 @@
-let { countValidPassphrases } = require('./04-1-solution');
+let { countValidPassphrases } = require('./04-1-solution')
 
-const alphabetically = (a, b) => { return a > b; }
+const alphabetically = (a, b) => {
+    return a > b
+}
 
 /**
  * returns true if a passphrase is comprised of words that aren't anagrams of each other and false otherwise
  */
 function areNoWordsAnagrams(passphraseString) {
-    let unverifiedWords = passphraseString.split(' ');
+    let unverifiedWords = passphraseString.split(' ')
     let alreadyContains = {}
     for (let w = 0; w < unverifiedWords.length; w++) {
-        let word = unverifiedWords[w].split('').sort(alphabetically).join('');
+        let word = unverifiedWords[w]
+            .split('')
+            .sort(alphabetically)
+            .join('')
         if (alreadyContains[word]) {
-            return false;
+            return false
         }
-        
-        alreadyContains[word] = true;
+
+        alreadyContains[word] = true
     }
-    return true;
+    return true
 }
 
 /**
@@ -24,10 +29,10 @@ function areNoWordsAnagrams(passphraseString) {
  * @param {*} passphraseList an array of passphrases
  */
 function countValidPassphrasesV2(passphraseList) {
-    return countValidPassphrases(passphraseList, areNoWordsAnagrams);
+    return countValidPassphrases(passphraseList, areNoWordsAnagrams)
 }
 
 module.exports = {
     areNoWordsAnagrams,
     countValidPassphrasesV2,
-};
+}

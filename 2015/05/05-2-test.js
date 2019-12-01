@@ -37,13 +37,11 @@ describe('05-2-solution', () => {
         })
 
         it('should return 53 for the puzzle input', () => {
-            let countTruthsAgainstSolution = (input) => {
+            let countTruthsAgainstSolution = input => {
                 return countTruths(input, solution)
             }
-            let result = runCallbackAgainstFile(
-                countTruthsAgainstSolution,
-                '2015/05/input.txt');
-            assert.equal(result, 53);
+            let result = runCallbackAgainstFile(countTruthsAgainstSolution, '2015/05/input.txt')
+            assert.equal(result, 53)
         })
     })
 })

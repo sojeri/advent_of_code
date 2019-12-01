@@ -10,14 +10,15 @@ function getSantasMap() {
         }
     }
 
-    let getVisitedHousesCount = () => { return visitedHousesCount }
+    let getVisitedHousesCount = () => {
+        return visitedHousesCount
+    }
 
     return {
         reportNewSantaLocation,
-        getVisitedHousesCount
+        getVisitedHousesCount,
     }
 }
-
 
 /**
  * calculates how many houses Santa was drunkenly sent to visit.
@@ -34,23 +35,23 @@ function howManyHousesVisited(drunkElfInstructions) {
 
     // report starting location
     santasMap.reportNewSantaLocation(x, y)
-    
+
     // move Santa
     for (let i = 0; i < drunkElfInstructions.length; i++) {
         instruction = drunkElfInstructions[i]
         switch (instruction) {
             case '^':
                 y++
-                break;
+                break
             case 'v':
                 y--
-                break;
+                break
             case '>':
                 x++
-                break;
+                break
             case '<':
                 x--
-                break;
+                break
             default:
                 throw new Error('unrecognized direction')
         }
@@ -62,4 +63,4 @@ function howManyHousesVisited(drunkElfInstructions) {
     return santasMap.getVisitedHousesCount()
 }
 
-module.exports = { howManyHousesVisited, getSantasMap };
+module.exports = { howManyHousesVisited, getSantasMap }

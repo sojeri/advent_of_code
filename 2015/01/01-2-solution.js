@@ -1,7 +1,7 @@
 /**
  * calculates the position of the instruction which first directs Santa to enter the basement.
  * full spec: https://adventofcode.com/2015/day/1#part2
- * @param {*} instruction 
+ * @param {*} instruction
  */
 function calculateBasementDiscovery(instruction) {
     floor = 0
@@ -11,7 +11,7 @@ function calculateBasementDiscovery(instruction) {
 
     for (i = 0; i < instruction.length; i++) {
         char = instruction[i]
-        floor += (char == '(') ? 1 : -1
+        floor += char == '(' ? 1 : -1
         if (floor == -1) {
             return i + 1 // Santa counts like a human, not a computer
         }
@@ -20,4 +20,4 @@ function calculateBasementDiscovery(instruction) {
     return floor
 }
 
-module.exports = calculateBasementDiscovery;
+module.exports = calculateBasementDiscovery

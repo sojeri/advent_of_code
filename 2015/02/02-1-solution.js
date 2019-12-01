@@ -36,7 +36,7 @@ function calculatePaperNeeded(presentDimensions) {
     smallest = smallest < sideWH ? smallest : sideWH
 
     // calculate total paper needed
-    paperNeeded = 2*sideHL + 2*sideLW + 2*sideWH + smallest
+    paperNeeded = 2 * sideHL + 2 * sideLW + 2 * sideWH + smallest
 
     return paperNeeded
 }
@@ -44,4 +44,4 @@ function calculatePaperNeeded(presentDimensions) {
 module.exports = {
     calculatePaperNeeded,
     calculateTotalPaperForList,
-};
+}

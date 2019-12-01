@@ -1,8 +1,4 @@
-let {
-    processClosetGraffiti,
-    getProcessedDataStore,
-    mostFrequentSnoozingMinute
-} = require('./04-1-solution');
+let { processClosetGraffiti, getProcessedDataStore, mostFrequentSnoozingMinute } = require('./04-1-solution')
 
 /**
  * runs through the processed guard data (@see processClosetGraffiti)
@@ -10,21 +6,21 @@ let {
  * @returns the id of the guard who slept the most & the minute
  */
 function whoSleptTheMost() {
-    let guards = getProcessedDataStore();
+    let guards = getProcessedDataStore()
 
-    let maxSleepPerMinute = -1;
-    let mostCommonlySleptMinute = -1;
-    let maxSleepId = -1;
+    let maxSleepPerMinute = -1
+    let mostCommonlySleptMinute = -1
+    let maxSleepId = -1
 
     Object.keys(guards).forEach(g => {
-        let currentMaxMinute = mostFrequentSnoozingMinute(g);
-        let currentMaxPerMinute = guards[g].sleep[currentMaxMinute];
+        let currentMaxMinute = mostFrequentSnoozingMinute(g)
+        let currentMaxPerMinute = guards[g].sleep[currentMaxMinute]
         if (currentMaxPerMinute > maxSleepPerMinute) {
-            maxSleepId = g;
-            maxSleepPerMinute = currentMaxPerMinute;
+            maxSleepId = g
+            maxSleepPerMinute = currentMaxPerMinute
             mostCommonlySleptMinute = currentMaxMinute
         }
-    });
+    })
 
     return {
         maxSleepId: maxSleepId,
@@ -45,10 +41,10 @@ function whoSleptTheMost() {
  * @returns a checksum that identifies the sleepiest guard
  */
 function generateChecksumForTheSleepiestGuard(logLines) {
-    processClosetGraffiti(logLines);
-    let { maxSleepId, mostCommonlySleptMinute } = whoSleptTheMost();
+    processClosetGraffiti(logLines)
+    let { maxSleepId, mostCommonlySleptMinute } = whoSleptTheMost()
 
-    return maxSleepId * mostCommonlySleptMinute;
+    return maxSleepId * mostCommonlySleptMinute
 }
 
-module.exports = generateChecksumForTheSleepiestGuard;
+module.exports = generateChecksumForTheSleepiestGuard

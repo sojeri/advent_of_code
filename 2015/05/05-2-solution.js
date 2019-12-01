@@ -23,13 +23,13 @@ function isNiceString(str) {
                  * firstValidCharPairIndex explanation:
                  * aaa has aa and aa in a row, but it's not valid.
                  * (per spec, it must be aa|aa / two _separate_ pairs to be valid.)
-                 * 
+                 *
                  * aaa calculation example:
                  * first pass (i = 1), prevChar is a and char is a.
                  *    no match. aa goes into charPairs at index 0.
                  * second pass (i = 2), still a & a.
                  *    match at index 0, but we know aaa isn't valid. firstValidCharPairIndex can't be 2 less than i.
-                 * 
+                 *
                  * baaaa (b+aa|aa) calculation example:
                  * first pass (i = 1), prevChar is b and char is a. (|ba|aaa)
                  *    no match. ba goes into pairs at index 0.

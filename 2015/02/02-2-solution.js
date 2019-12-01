@@ -27,13 +27,16 @@ function ascending(a, b) {
  * @param {*} presentDimensions in the form of hxlxw, eg 3x4x5
  */
 function calculateRibbonNeeded(presentDimensions) {
-    let dimensions = presentDimensions.split('x').map(d => Number(d)).sort(ascending)
+    let dimensions = presentDimensions
+        .split('x')
+        .map(d => Number(d))
+        .sort(ascending)
     let smallest = dimensions[0]
     let nextSmallest = dimensions[1]
 
     let volume = dimensions.reduce(multiply, 1)
 
-    let ribbonNeeded = 2*smallest + 2*nextSmallest + volume
+    let ribbonNeeded = 2 * smallest + 2 * nextSmallest + volume
 
     return ribbonNeeded
 }
@@ -41,4 +44,4 @@ function calculateRibbonNeeded(presentDimensions) {
 module.exports = {
     calculateRibbonNeeded,
     calculateTotalRibbonForList,
-};
+}

@@ -1,4 +1,4 @@
-let { getSantasMap } = require('./03-1-solution');
+let { getSantasMap } = require('./03-1-solution')
 
 /**
  * calculates how many houses both Santas were drunkenly sent to visit.
@@ -21,16 +21,16 @@ function howManyHousesVisited(drunkElfInstructions) {
         switch (whichWay) {
             case '^':
                 quasiSanta.y++
-                break;
+                break
             case 'v':
                 quasiSanta.y--
-                break;
+                break
             case '>':
                 quasiSanta.x++
-                break;
+                break
             case '<':
                 quasiSanta.x--
-                break;
+                break
             default:
                 throw new Error('unrecognized direction')
         }
@@ -38,7 +38,7 @@ function howManyHousesVisited(drunkElfInstructions) {
         // update Santa's map
         santasMap.reportNewSantaLocation(quasiSanta.x, quasiSanta.y)
     }
-    
+
     // move Santa or RoboSanta
     for (let i = 0; i < drunkElfInstructions.length; i++) {
         instruction = drunkElfInstructions[i]
@@ -48,4 +48,4 @@ function howManyHousesVisited(drunkElfInstructions) {
     return santasMap.getVisitedHousesCount()
 }
 
-module.exports = howManyHousesVisited;
+module.exports = howManyHousesVisited

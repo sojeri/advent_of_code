@@ -1,14 +1,17 @@
 /**
  * returns the index of the largest element in the given array
- * @param {*} array 
+ * @param {*} array
  */
 function getNewMax(array) {
-    let max = array[0];
-    let maxIndex = 0;
+    let max = array[0]
+    let maxIndex = 0
     array.forEach((val, i) => {
-        if (val > max) { max = val; maxIndex = i; }
-    });
-    return maxIndex;
+        if (val > max) {
+            max = val
+            maxIndex = i
+        }
+    })
+    return maxIndex
 }
 
 /**
@@ -20,42 +23,42 @@ function getNewMax(array) {
  */
 function countRedistributionCycles(banks, shouldContinueProcessingCb) {
     // sanitize input
-    banks = banks.split('	').map(str => Number(str));
+    banks = banks.split('	').map(str => Number(str))
 
-    let shouldRunAnotherCycle = true;
-    let seenConfigurations = {};
-    let count = 0;
+    let shouldRunAnotherCycle = true
+    let seenConfigurations = {}
+    let count = 0
 
     while (shouldRunAnotherCycle) {
-        count++;
-        let maxIndex = getNewMax(banks);
-        let valueToRedistribute = banks[maxIndex];
-        banks[maxIndex] = 0;
+        count++
+        let maxIndex = getNewMax(banks)
+        let valueToRedistribute = banks[maxIndex]
+        banks[maxIndex] = 0
 
-        let n = maxIndex;
+        let n = maxIndex
         while (valueToRedistribute > 0) {
-            n++;
-            let i = n % banks.length;
+            n++
+            let i = n % banks.length
 
             // carry val
-            banks[i]++;
-            valueToRedistribute--;
+            banks[i]++
+            valueToRedistribute--
         }
 
-        let currentConfiguration = banks.join();
+        let currentConfiguration = banks.join()
         if (!seenConfigurations[currentConfiguration]) {
-            seenConfigurations[currentConfiguration] = true;
+            seenConfigurations[currentConfiguration] = true
         } else {
-            shouldRunAnotherCycle = shouldContinueProcessingCb ?
-                shouldContinueProcessingCb(seenConfigurations, currentConfiguration) :
-                false;
+            shouldRunAnotherCycle = shouldContinueProcessingCb
+                ? shouldContinueProcessingCb(seenConfigurations, currentConfiguration)
+                : false
         }
     }
 
-    return count;
+    return count
 }
 
 module.exports = {
     countRedistributionCycles,
     getNewMax,
-};
+}
