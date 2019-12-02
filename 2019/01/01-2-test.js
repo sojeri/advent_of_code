@@ -2,7 +2,7 @@ const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
 let { calculateFuelForItemV2, calculateFuelWholeShipV2 } = require('./01-2-solution')
 
-describe.only('01-2-solution', () => {
+describe('01-2-solution', () => {
     describe('calculateFuelForItemV2()', () => {
         it('should return 2 for 14', () => {
             assert.equal(calculateFuelForItemV2(14), 2)
