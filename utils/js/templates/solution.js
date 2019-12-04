@@ -1,4 +1,4 @@
-// let countTruths = require('../../utils/js/countTruths')
+// let { countTruths } = require('../../utils/js/countTruths')
 
 // TODO: implement @@solution
 function solution() {}

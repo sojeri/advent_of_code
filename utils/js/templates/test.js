@@ -1,6 +1,6 @@
 const assert = require('assert')
 // let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-// let countTruths = require('../../utils/js/countTruths')
+// let { countTruths } = require('../../utils/js/countTruths')
 let solution = require('./@@solution')
 
 describe('@@solution', () => {
