@@ -4,9 +4,9 @@ let solution = require('./02-2-solution')
 
 describe('02-2-solution', () => {
     describe('solution', () => {
-        it('should return ??? for puzzle input', () => {
+        it('should return 4967 for puzzle input', () => {
             let result = runCallbackAgainstFile(solution, '2019/02/input.txt')
-            assert.equal(result, -1)
+            assert.equal(result, 4967)
         })
     })
 })

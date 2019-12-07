@@ -199,7 +199,7 @@ function getIntcodeComputer() {
 /**
  * runs through instructions in a given intcode program.
  * on program exit, returns the value stored in position 0 of the program.
- * full spec: https://adventofcode.com/2019/day/5
+ * full spec: https://adventofcode.com/2019/
  * @param {*} program an intcode program consisting of opcodes, raw values, and storage slots
  * @param {*} input the input to use when encountering opcode 3 (saveInput)
  */

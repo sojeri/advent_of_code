@@ -1,8 +1,8 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let { exampleIntcodeComputerUsage, getIntcodeComputer, loadProgram, runProgram } = require('./intcodeComputer')
+let { exampleIntcodeComputerUsage, getIntcodeComputer, loadProgram, runProgram } = require('.')
 
-describe.only('incodeComputer module', () => {
+describe('incodeComputer module', () => {
     describe('runProgram()', () => {
         it('throws an error if a program is not first loaded into memory', () => {
             assert.throws(

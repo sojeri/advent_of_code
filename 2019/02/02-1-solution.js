@@ -1,3 +1,5 @@
+let { getIntcodeComputer, loadProgram, runProgram } = require('../intcode-computer')
+
 /**
  * runs through instructions in a given intcode program.
  * on program exit, returns the value stored in position 0 of the program.
@@ -18,35 +20,17 @@ function solution(program, noun = 12, verb = 2) {
     program = program.split(',').map(s => {
         return Number(s)
     })
-    let here = 0
+
+    // arrange computer
+    let computer = getIntcodeComputer()
+    loadProgram(computer, program)
 
     if (is1202) {
-        program[1] = noun
-        program[2] = verb
+        computer.memory[1] = noun
+        computer.memory[2] = verb
     }
 
-    while (true) {
-        switch (program[here]) {
-            case 1:
-                first = program[here + 1]
-                second = program[here + 2]
-                result = program[here + 3]
-                program[result] = program[first] + program[second]
-                break
-            case 2:
-                first = program[here + 1]
-                second = program[here + 2]
-                result = program[here + 3]
-                program[result] = program[first] * program[second]
-                break
-            case 99:
-                return program[0]
-            default:
-                throw new Error(`unrecognized Opcode found at postion ${here}`)
-        }
-
-        here += 4
-    }
+    return runProgram(computer)
 }
 
 module.exports = solution
