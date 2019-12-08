@@ -69,7 +69,7 @@ function addOpCodePrograms(computer) {
     }
 
     computer.storeInput = whereAmI => {
-        computer.set(whereAmI + 1, computer.input)
+        computer.set(whereAmI + 1, computer.input.shift())
         return whereAmI + 2
     }
 
@@ -114,8 +114,14 @@ function addOpCodePrograms(computer) {
  * @param {*} input the input to pass into the program on demand
  */
 function loadProgram(intcodeComputer, intcodeProgram, input) {
+    if (!Array.isArray(intcodeProgram)) {
+        intcodeProgram = intcodeProgram.split(',').map(s => {
+            return Number(s)
+        })
+    }
+
     intcodeComputer.memory = intcodeProgram
-    intcodeComputer.input = input
+    intcodeComputer.input = input != undefined && !Array.isArray(input) ? [input] : input
 }
 
 /**
@@ -201,16 +207,13 @@ function getIntcodeComputer() {
  * on program exit, returns the value stored in position 0 of the program.
  * full spec: https://adventofcode.com/2019/
  * @param {*} program an intcode program consisting of opcodes, raw values, and storage slots
- * @param {*} input the input to use when encountering opcode 3 (saveInput)
+ * @param {*} input the input to use when encountering opcode 3
  */
 function exampleIntcodeComputerUsage(program, input = 1) {
     // sanitize data
     if (Array.isArray(program)) {
         program = program[0]
     }
-    program = program.split(',').map(s => {
-        return Number(s)
-    })
 
     // arrange computer
     let computer = getIntcodeComputer()

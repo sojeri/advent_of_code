@@ -16,6 +16,31 @@ describe('incodeComputer module', () => {
         })
     })
 
+    describe('multiple input behavior', () => {
+        it('can take multiple inputs', () => {
+            let computer = getIntcodeComputer()
+            loadProgram(computer, '3,0,3,1,99', [666, 555])
+
+            // sanity check initial memory state
+            assert.equal(computer.memory[0], 3)
+            assert.equal(computer.memory[1], 0)
+
+            runProgram(computer)
+
+            // verify final memory state
+            assert.equal(computer.memory[0], 666)
+            assert.equal(computer.memory[1], 555)
+        })
+
+        it('throws if input opcode is called but no input was passed', () => {
+            let computer = getIntcodeComputer()
+            loadProgram(computer, '3,0,99')
+            assert.throws(() => {
+                runProgram(computer)
+            }, Error)
+        })
+    })
+
     describe('backwards compatibility: day 2 tests should still work', () => {
         it('should return 3500 for 1,9,10,3,2,3,11,0,99,30,40,50', () => {
             assert.equal(exampleIntcodeComputerUsage('1,9,10,3,2,3,11,0,99,30,40,50'), 3500)
