@@ -2,7 +2,7 @@ const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
 let { exampleIntcodeComputerUsage, getIntcodeComputer, loadProgram, runProgram } = require('.')
 
-describe('incodeComputer module', () => {
+describe.only('incodeComputer module', () => {
     describe('runProgram()', () => {
         it('throws an error if a program is not first loaded into memory', () => {
             assert.throws(
@@ -16,7 +16,7 @@ describe('incodeComputer module', () => {
         })
     })
 
-    describe('multiple input behavior', () => {
+    describe('input queue behavior', () => {
         it('can take multiple inputs', () => {
             let computer = getIntcodeComputer()
             loadProgram(computer, '3,0,3,1,99', [666, 555])
@@ -32,12 +32,25 @@ describe('incodeComputer module', () => {
             assert.equal(computer.memory[1], 555)
         })
 
-        it('throws if input opcode is called but no input was passed', () => {
-            let computer = getIntcodeComputer()
-            loadProgram(computer, '3,0,99')
-            assert.throws(() => {
-                runProgram(computer)
-            }, Error)
+        describe('during synchronous execution', () => {
+            it('throws if input opcode is called but no input was passed', () => {
+                let computer = getIntcodeComputer()
+                loadProgram(computer, '3,0,99')
+                assert.throws(() => {
+                    runProgram(computer)
+                }, Error)
+            })
+        })
+
+        describe('async execution', () => {
+            it('pauses execution when reaching an input opcode if no input is left in the queue', () => {
+                let computer = getIntcodeComputer()
+                loadProgram(computer, '3,0,99')
+                assert.doesNotThrow(() => {
+                    runProgram(computer)
+                })
+            })
+            it('continues execution after getting new input')
         })
     })
 

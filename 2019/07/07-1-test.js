@@ -1,8 +1,8 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let solution = require('./07-1-solution')
+let { solution } = require('./07-1-solution')
 
-describe('07-1-solution', () => {
+describe.only('07-1-solution', () => {
     describe('solution', () => {
         it('should return 43210 for example input', () => {
             assert.equal(solution('3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0'), 43210)
@@ -22,7 +22,7 @@ describe('07-1-solution', () => {
             let result = runCallbackAgainstFile(solution, '2019/07/example.txt')
             assert.equal(result, 65210)
         })
-        it('should return 199988 for example input as file', () => {
+        it('should return 199988 for puzzle input', () => {
             let result = runCallbackAgainstFile(solution, '2019/07/input.txt')
             assert.equal(result, 199988)
         })

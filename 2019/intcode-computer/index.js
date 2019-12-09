@@ -124,6 +124,13 @@ function loadProgram(intcodeComputer, intcodeProgram, input) {
     intcodeComputer.input = input != undefined && !Array.isArray(input) ? [input] : input
 }
 
+function addInput(intcodeComputer, input) {
+    if (!intcodeComputer.input) {
+        intcodeComputer.input = []
+    }
+    intcodeComputer.input.push(input)
+}
+
 /**
  * runs the intcodeProgram on the given intcodeComputer
  * @param {*} computer an intcodeComputer holding an intcodeProgram in its memory
@@ -134,7 +141,7 @@ function runProgram(computer) {
     }
 
     // begin processing
-    let memoryPointer = 0
+    let memoryPointer = computer.savePoint || 0
     while (true) {
         // get & parse parameters
         let opcode = computer.memory[memoryPointer]
@@ -168,6 +175,10 @@ function runProgram(computer) {
                 memoryPointer = computer.multiply(memoryPointer, param1Type, param2Type)
                 break
             case opCodes.storeInput:
+                if (computer.pauseForInput && computer.input && computer.input.length == 0) {
+                    computer.savePoint = memoryPointer
+                    return PAUSE_EXECUTION_MARKER
+                }
                 memoryPointer = computer.storeInput(memoryPointer)
                 break
             case opCodes.setOutput:
@@ -186,6 +197,9 @@ function runProgram(computer) {
                 memoryPointer = computer.equals(memoryPointer, param1Type, param2Type)
                 break
             case opCodes.end:
+                if (computer.pauseForInput) {
+                    return PROCESS_TERMINATED_MARKER
+                }
                 return computer.end()
             default:
                 throw new Error(`unrecognized Opcode found at postion ${memoryPointer}`)
@@ -193,8 +207,14 @@ function runProgram(computer) {
     }
 }
 
-function getIntcodeComputer() {
+/**
+ * returns an intcode computer capable of processing intcode programs.
+ * (use loadProgram to add an intcode program to memory and runProgram to trigger execution.)
+ * @param {*} pauseForInput a boolean flag indicating whether the computer should pause execution when new input is required
+ */
+function getIntcodeComputer(pauseForInput = false) {
     let computer = {}
+    computer.pauseForInput = pauseForInput
 
     addMemoryAccess(computer)
     addOpCodePrograms(computer)
@@ -222,9 +242,15 @@ function exampleIntcodeComputerUsage(program, input = 1) {
     return runProgram(computer)
 }
 
+const PAUSE_EXECUTION_MARKER = 'PAUSE'
+const PROCESS_TERMINATED_MARKER = 'END'
+
 module.exports = {
+    addInput,
     exampleIntcodeComputerUsage,
     getIntcodeComputer,
     loadProgram,
     runProgram,
+    PAUSE_EXECUTION_MARKER,
+    PROCESS_TERMINATED_MARKER,
 }
