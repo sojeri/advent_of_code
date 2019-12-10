@@ -1,8 +1,16 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let { exampleIntcodeComputerUsage, getIntcodeComputer, loadProgram, runProgram } = require('.')
+let {
+    addInput,
+    exampleIntcodeComputerUsage,
+    getIntcodeComputer,
+    loadProgram,
+    runProgram,
+    PAUSE_EXECUTION_MARKER,
+    PROCESS_TERMINATED_MARKER,
+} = require('.')
 
-describe.only('incodeComputer module', () => {
+describe('incodeComputer module', () => {
     describe('runProgram()', () => {
         it('throws an error if a program is not first loaded into memory', () => {
             assert.throws(
@@ -13,6 +21,32 @@ describe.only('incodeComputer module', () => {
                 Error,
                 'did you forget to load the program into memory?'
             )
+        })
+    })
+
+    describe('day 9 changes', () => {
+        it('should return 1125899906842624 for 104,1125899906842624,99', () => {
+            let computer = getIntcodeComputer()
+            loadProgram(computer, '104,1125899906842624,99')
+
+            let result = runProgram(computer)
+            assert.equal(result, 1125899906842624)
+        })
+
+        it('should return a 16 digit number for 1102,34915192,34915192,7,4,7,99,0', () => {
+            let computer = getIntcodeComputer()
+            loadProgram(computer, '1102,34915192,34915192,7,4,7,99,0')
+
+            let result = runProgram(computer)
+            assert.equal(result.toString().length, 16)
+        })
+
+        it('should return a quine', () => {
+            let computer = getIntcodeComputer(false, true)
+            let program = '109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99'
+            loadProgram(computer, program)
+            let result = runProgram(computer)
+            assert.equal(result.join(','), program)
         })
     })
 
@@ -44,13 +78,22 @@ describe.only('incodeComputer module', () => {
 
         describe('async execution', () => {
             it('pauses execution when reaching an input opcode if no input is left in the queue', () => {
-                let computer = getIntcodeComputer()
+                let computer = getIntcodeComputer(true)
                 loadProgram(computer, '3,0,99')
-                assert.doesNotThrow(() => {
-                    runProgram(computer)
-                })
+                let result = runProgram(computer)
+                assert.equal(result, PAUSE_EXECUTION_MARKER)
             })
-            it('continues execution after getting new input')
+
+            it('continues execution after getting new input', () => {
+                let computer = getIntcodeComputer(true)
+                loadProgram(computer, '3,0,4,0,99')
+                let result = runProgram(computer)
+                assert.equal(result, PAUSE_EXECUTION_MARKER)
+                addInput(computer, 666)
+                result = runProgram(computer)
+                assert.equal(result, PROCESS_TERMINATED_MARKER)
+                assert.equal(computer.output, 666)
+            })
         })
     })
 

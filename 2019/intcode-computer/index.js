@@ -1,6 +1,7 @@
 const supportedParamTypes = {
     position: 0, // position == double lookup: get/set value at program[program[position]]
     immediate: 1, // immediate == single lookup: get/set value at program[position]
+    relative: 2, // relative == position + relative value
 }
 
 const opCodes = {
@@ -13,20 +14,62 @@ const opCodes = {
     jumpIfFalse: 6,
     lessThan: 7,
     equals: 8,
+    relativeBaseOffset: 9,
+}
+
+function getType(int, multiplier) {
+    if (int >= 2 * multiplier) {
+        return [supportedParamTypes.relative, int - 2 * multiplier]
+    } else if (int >= multiplier) {
+        return [supportedParamTypes.immediate, int - multiplier]
+    }
+
+    return [supportedParamTypes.position, int]
+}
+
+function parseOpcode(raw) {
+    let opcode = raw
+
+    let param3 = getType(opcode, 10000)
+    opcode = param3[1]
+
+    let param2 = getType(opcode, 1000)
+    opcode = param2[1]
+
+    let param1 = getType(opcode, 100)
+    opcode = param1[1]
+
+    return {
+        p1Type: param1[0],
+        p2Type: param2[0],
+        p3Type: param3[0],
+        opcode: opcode,
+    }
 }
 
 function addMemoryAccess(computer) {
     computer.get = (where, paramType) => {
         if (paramType == supportedParamTypes.immediate) {
-            return computer.memory[where]
+            let value = computer.memory[where]
+            return value != undefined ? value : 0
         }
 
-        // ( else supportedParameters.position)
-        return computer.memory[computer.memory[where]]
+        if (paramType == supportedParamTypes.relative) {
+            let value = computer.memory[computer.memory[where] + computer.offset]
+            return value != undefined ? value : 0
+        }
+
+        let value = computer.memory[computer.memory[where]]
+        return value != undefined ? value : 0
     }
 
-    computer.set = (where, what) => {
-        computer.memory[computer.memory[where]] = what
+    computer.set = (where, what, paramType) => {
+        if (paramType == supportedParamTypes.position) {
+            computer.memory[computer.memory[where]] = what
+        } else {
+            // relative
+            computer.memory[computer.memory[where] + computer.offset] = what
+        }
     }
 }
 
@@ -44,11 +87,11 @@ const equals = (a, b) => {
 }
 
 function addOpCodePrograms(computer) {
-    computer.computeAndSave = (whereAmI, param1Type, param2Type, computeCb) => {
+    computer.computeAndSave = (whereAmI, param1Type, param2Type, param3Type, computeCb) => {
         let first = computer.get(whereAmI + 1, param1Type)
         let second = computer.get(whereAmI + 2, param2Type)
 
-        computer.set(whereAmI + 3, computeCb(first, second))
+        computer.set(whereAmI + 3, computeCb(first, second), param3Type)
 
         return whereAmI + 4
     }
@@ -60,22 +103,22 @@ function addOpCodePrograms(computer) {
         return computeCb(first, second, whereAmI + 3)
     }
 
-    computer.add = (whereAmI, param1Type, param2Type) => {
-        return computer.computeAndSave(whereAmI, param1Type, param2Type, add)
+    computer.add = (whereAmI, param1Type, param2Type, param3Type) => {
+        return computer.computeAndSave(whereAmI, param1Type, param2Type, param3Type, add)
     }
 
-    computer.multiply = (whereAmI, param1Type, param2Type) => {
-        return computer.computeAndSave(whereAmI, param1Type, param2Type, multiply)
+    computer.multiply = (whereAmI, param1Type, param2Type, param3Type) => {
+        return computer.computeAndSave(whereAmI, param1Type, param2Type, param3Type, multiply)
     }
 
-    computer.storeInput = whereAmI => {
-        computer.set(whereAmI + 1, computer.input.shift())
+    computer.storeInput = (whereAmI, param1Type) => {
+        computer.set(whereAmI + 1, computer.input.shift(), param1Type)
         return whereAmI + 2
     }
 
     computer.setOutput = (whereAmI, param1Type) => {
         let first = computer.get(whereAmI + 1, param1Type)
-        computer.output = first
+        computer.output.push(first)
 
         return whereAmI + 2
     }
@@ -94,15 +137,27 @@ function addOpCodePrograms(computer) {
         return first == 0 ? second : whereAmI + 3
     }
 
-    computer.lessThan = (whereAmI, param1Type, param2Type) => {
-        return computer.computeAndSave(whereAmI, param1Type, param2Type, lessThan)
+    computer.lessThan = (whereAmI, param1Type, param2Type, param3Type) => {
+        return computer.computeAndSave(whereAmI, param1Type, param2Type, param3Type, lessThan)
     }
 
-    computer.equals = (whereAmI, param1Type, param2Type) => {
-        return computer.computeAndSave(whereAmI, param1Type, param2Type, equals)
+    computer.equals = (whereAmI, param1Type, param2Type, param3Type) => {
+        return computer.computeAndSave(whereAmI, param1Type, param2Type, param3Type, equals)
+    }
+
+    computer.relativeBaseOffset = (whereAmI, param1Type) => {
+        let first = computer.get(whereAmI + 1, param1Type)
+        computer.offset = first + computer.offset
+        return whereAmI + 2
     }
 
     computer.end = () => {
+        if (!computer.returnFullOutput) {
+            computer.output = computer.output.pop()
+        }
+        if (computer.waitForInput) {
+            return PROCESS_TERMINATED_MARKER
+        }
         return computer.output || computer.memory[0]
     }
 }
@@ -121,9 +176,19 @@ function loadProgram(intcodeComputer, intcodeProgram, input) {
     }
 
     intcodeComputer.memory = intcodeProgram
-    intcodeComputer.input = input != undefined && !Array.isArray(input) ? [input] : input
+    if (input) {
+        intcodeComputer.input = Array.isArray(input) ? input : [input]
+    } else {
+        intcodeComputer.input = []
+    }
 }
 
+/**
+ * allows submitting new input during asynchronous execution mode.
+ * (when computer.waitForInput is set to true.)
+ * @param {*} intcodeComputer
+ * @param {*} input
+ */
 function addInput(intcodeComputer, input) {
     if (!intcodeComputer.input) {
         intcodeComputer.input = []
@@ -132,7 +197,10 @@ function addInput(intcodeComputer, input) {
 }
 
 /**
- * runs the intcodeProgram on the given intcodeComputer
+ * runs the intcodeProgram on the given intcodeComputer.
+ * * in sync mode, computer returns output (see opcode 4) or value stored at position 0.
+ * * in async mode (computer.waitForInput == true), computer returns pause or end terimation signals.
+ *   * @see PAUSE_EXECUTION_MARKER, PROCESS_TERMINATED_MARKER
  * @param {*} computer an intcodeComputer holding an intcodeProgram in its memory
  */
 function runProgram(computer) {
@@ -143,43 +211,28 @@ function runProgram(computer) {
     // begin processing
     let memoryPointer = computer.savePoint || 0
     while (true) {
-        // get & parse parameters
-        let opcode = computer.memory[memoryPointer]
-        let param1Type = supportedParamTypes.position
-        let param2Type = supportedParamTypes.position
-        // // THIS CODE IS NEVER USED
-        // // SO I COMMENTED IT OUT *SHAKES FIST*
-        // let param3Type = supportedParamTypes.position
+        // get parameters
+        let opcodeTypes = parseOpcode(computer.memory[memoryPointer])
+        let param1Type = opcodeTypes.p1Type
+        let param2Type = opcodeTypes.p2Type
+        let param3Type = opcodeTypes.p3Type
 
-        // if (opcode >= 10000) {
-        //     param3Type = supportedParamTypes.immediate
-        //     opcode = opcode - 10000
-        // }
-
-        if (opcode >= 1000) {
-            param2Type = supportedParamTypes.immediate
-            opcode = opcode - 1000
-        }
-
-        if (opcode >= 100) {
-            param1Type = supportedParamTypes.immediate
-            opcode = opcode - 100
-        }
-
-        // handle opcodes
-        switch (opcode) {
+        // handle current opcode
+        switch (opcodeTypes.opcode) {
             case opCodes.addition:
-                memoryPointer = computer.add(memoryPointer, param1Type, param2Type)
+                memoryPointer = computer.add(memoryPointer, param1Type, param2Type, param3Type)
                 break
             case opCodes.multiplication:
-                memoryPointer = computer.multiply(memoryPointer, param1Type, param2Type)
+                memoryPointer = computer.multiply(memoryPointer, param1Type, param2Type, param3Type)
                 break
             case opCodes.storeInput:
-                if (computer.pauseForInput && computer.input && computer.input.length == 0) {
+                if (computer.waitForInput && computer.input.length == 0) {
                     computer.savePoint = memoryPointer
                     return PAUSE_EXECUTION_MARKER
+                } else if (computer.input.length == 0) {
+                    throw new Error('program called for input, but computer has none!')
                 }
-                memoryPointer = computer.storeInput(memoryPointer)
+                memoryPointer = computer.storeInput(memoryPointer, param1Type)
                 break
             case opCodes.setOutput:
                 memoryPointer = computer.setOutput(memoryPointer, param1Type)
@@ -191,15 +244,15 @@ function runProgram(computer) {
                 memoryPointer = computer.jumpIfFalse(memoryPointer, param1Type, param2Type)
                 break
             case opCodes.lessThan:
-                memoryPointer = computer.lessThan(memoryPointer, param1Type, param2Type)
+                memoryPointer = computer.lessThan(memoryPointer, param1Type, param2Type, param3Type)
                 break
             case opCodes.equals:
-                memoryPointer = computer.equals(memoryPointer, param1Type, param2Type)
+                memoryPointer = computer.equals(memoryPointer, param1Type, param2Type, param3Type)
+                break
+            case opCodes.relativeBaseOffset:
+                memoryPointer = computer.relativeBaseOffset(memoryPointer, param1Type)
                 break
             case opCodes.end:
-                if (computer.pauseForInput) {
-                    return PROCESS_TERMINATED_MARKER
-                }
                 return computer.end()
             default:
                 throw new Error(`unrecognized Opcode found at postion ${memoryPointer}`)
@@ -210,11 +263,14 @@ function runProgram(computer) {
 /**
  * returns an intcode computer capable of processing intcode programs.
  * (use loadProgram to add an intcode program to memory and runProgram to trigger execution.)
- * @param {*} pauseForInput a boolean flag indicating whether the computer should pause execution when new input is required
+ * @param {*} waitForInput a boolean flag indicating whether the computer should pause execution when new input is required
  */
-function getIntcodeComputer(pauseForInput = false) {
+function getIntcodeComputer(waitForInput = false, returnFullOutput = false) {
     let computer = {}
-    computer.pauseForInput = pauseForInput
+    computer.waitForInput = waitForInput
+    computer.returnFullOutput = returnFullOutput
+    computer.offset = 0
+    computer.output = []
 
     addMemoryAccess(computer)
     addOpCodePrograms(computer)
