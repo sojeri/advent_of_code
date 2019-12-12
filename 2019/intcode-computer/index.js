@@ -176,7 +176,7 @@ function loadProgram(intcodeComputer, intcodeProgram, input) {
     }
 
     intcodeComputer.memory = intcodeProgram
-    if (input) {
+    if (input != undefined) {
         intcodeComputer.input = Array.isArray(input) ? input : [input]
     } else {
         intcodeComputer.input = []
