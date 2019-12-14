@@ -2,21 +2,30 @@
 
 const scaffoldCurrentDirectory = require('./scaffoldCurrentDirectory')
 
-const exampleCommand = '`yarn new 2017 01`'
-const exampleCommandWithPlaceholders = '`yarn new <year> <day>'
+const exampleCommandWithPlaceholders = 'yarn new <year> <day> [optional extra words for directory name]'
+const exampleCommand = '`yarn new 2017 01 find shortest path`'
+const exampleCommandOutput1 = '2017/01-find-shortest-path/01-solution.js'
+const exampleCommandOutput2 = '2017/01-find-shortest-path/01-test.js'
+const exampleCommandOutput3 = '2017/01-find-shortest-path/02-solution.js'
+const exampleCommandOutput4 = '2017/01-find-shortest-path/02-test.js'
 
 function createScaffold() {
     let args = process.argv.slice(2)
     if (args.length < 2) {
-        console.log('You can use this command to scaffold a new directory:')
-        console.log(`    ${exampleCommandWithPlaceholders}`)
-        console.log(`    eg, ${exampleCommand}`)
+        console.log('You can use this command to scaffold a new directory:\n')
+        console.log(`    ${exampleCommandWithPlaceholders}\n`)
+        console.log(`eg, ${exampleCommand} would scaffold the following files:\n`)
+        console.log(`    * ${exampleCommandOutput1}`)
+        console.log(`    * ${exampleCommandOutput2}`)
+        console.log(`    * ${exampleCommandOutput3}`)
+        console.log(`    * ${exampleCommandOutput4}\n`)
 
         return
     }
 
     let aocYear = args[0]
     let aocDay = args[1]
+    let aocDayDir = `${aocDay}`
 
     validateNumberRange(aocYear, 'year', 2015, 2100)
     validateNumberRange(aocDay, 'day', 1, 25)
@@ -25,7 +34,16 @@ function createScaffold() {
         aocDay = `0${aocDay}`
     }
 
-    scaffoldCurrentDirectory(`${aocYear}/${aocDay}/${aocDay}`)
+    args = args.slice(2)
+    if (args.length > 0) {
+        args = args.map(a => {
+            return getSupportedCharsFromWord(a)
+        })
+        aocDayDir += '-'
+        aocDayDir += args.join('-')
+    }
+
+    scaffoldCurrentDirectory(`${aocYear}/${aocDayDir}/${aocDay}`)
 }
 
 function validateNumberRange(value, valueName, min, max) {
@@ -42,6 +60,17 @@ function validateNumberRange(value, valueName, min, max) {
     if (value < min) {
         throw new Error(`${valueName} ${value} is less than minimum ${min}`)
     }
+}
+
+const supportedChars = /[a-zA-Z]+/
+function getSupportedCharsFromWord(possibleWord) {
+    let word = possibleWord.match(supportedChars)[0]
+
+    if (word.length == 0) {
+        throw new Error(`${possibleWord} does not contain any recognized chars [used regex a-zA-Z+ matcher]`)
+    }
+
+    return word
 }
 
 createScaffold()
