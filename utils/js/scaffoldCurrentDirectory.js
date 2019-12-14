@@ -29,8 +29,12 @@ function getTemplatePath() {
 }
 
 const dayMarker = '@@'
-function updateContent(buffer, name) {
+const importMarker = '%%'
+const importIntcode =
+    "const { addInput, getIntcodeComputer, loadProgram, runProgram, PAUSE_EXECUTION_MARKER, PROCESS_TERMINATED_MARKER, } = require('../intcode-computer')"
+function updateContent(buffer, name, is2019) {
     let content = buffer.toString()
+    content = content.split(importMarker).join(is2019 ? importIntcode : '')
     return content.split(dayMarker).join(name)
 }
 
@@ -43,6 +47,7 @@ function scaffoldCurrentDirectory(prefix) {
     // get current directory number (eg 04)
     let path = prefix.split(dirSeparator)
     let day = path.pop()
+    let year = path[0]
     createOutputPath(path)
 
     // read template file, looping through lines
@@ -61,7 +66,7 @@ function scaffoldCurrentDirectory(prefix) {
             // - if day line, replace marker with current directory number
             writeStreams.forEach((ws, i) => {
                 let projectName = day + templateVariants[i]
-                ws.write(updateContent(chunk, projectName))
+                ws.write(updateContent(chunk, projectName, year == '2019'))
             })
         })
         readStream.on('end', () => {
