@@ -16,7 +16,7 @@ describe('08-1-solution', () => {
                 return solution(spaceImage, 25, 6)
             }
 
-            let result = runCallbackAgainstFile(inputWrapper, '2019/08/input.txt')
+            let result = runCallbackAgainstFile(inputWrapper, '2019/08-parse-space-image/input.txt')
             assert.equal(result, 1703)
         })
     })

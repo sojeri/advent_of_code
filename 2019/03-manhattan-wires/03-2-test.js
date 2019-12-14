@@ -23,7 +23,7 @@ describe('03-2-solution', () => {
             )
         })
         it('should return 35194 for puzzle input', () => {
-            let result = runCallbackAgainstFile(findShortestDistance, '2019/03/input.txt')
+            let result = runCallbackAgainstFile(findShortestDistance, '2019/03-manhattan-wires/input.txt')
             assert.equal(result, 35194)
         })
     })

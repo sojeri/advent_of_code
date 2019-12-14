@@ -27,12 +27,12 @@ describe('01-1-solution', () => {
         })
 
         it('should return 658 for 12,14,1969 as a file', () => {
-            let result = runCallbackAgainstFile(solution.calculateFuelWholeShip, '2019/01/example.txt')
+            let result = runCallbackAgainstFile(solution.calculateFuelWholeShip, '2019/01-fuel-calculator/example.txt')
             assert.equal(result, 658)
         })
 
         it('should return 3297896 for puzzle input', () => {
-            let result = runCallbackAgainstFile(solution.calculateFuelWholeShip, '2019/01/input.txt')
+            let result = runCallbackAgainstFile(solution.calculateFuelWholeShip, '2019/01-fuel-calculator/input.txt')
             assert.equal(result, 3297896)
         })
     })

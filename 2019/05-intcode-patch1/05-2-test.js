@@ -41,7 +41,7 @@ describe('05-2-solution', () => {
                 return solution(intcodeProgram, 1)
             }
 
-            let result = runCallbackAgainstFile(inputWrapper, '2019/05/input.txt')
+            let result = runCallbackAgainstFile(inputWrapper, '2019/05-intcode-patch1/input.txt')
             assert.equal(result, 15259545)
         })
     })
@@ -86,7 +86,7 @@ describe('05-2-solution', () => {
                 return solution(intcodeProgram, 5 /* stated puzzle input */)
             }
 
-            let result = runCallbackAgainstFile(inputWrapper, '2019/05/input.txt')
+            let result = runCallbackAgainstFile(inputWrapper, '2019/05-intcode-patch1/input.txt')
             assert.equal(result, 7616021)
         })
     })

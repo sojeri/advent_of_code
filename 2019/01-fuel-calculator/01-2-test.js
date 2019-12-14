@@ -27,7 +27,7 @@ describe('01-2-solution', () => {
         })
 
         it('should return 4943969 for puzzle input', () => {
-            let result = runCallbackAgainstFile(calculateFuelWholeShipV2, '2019/01/input.txt')
+            let result = runCallbackAgainstFile(calculateFuelWholeShipV2, '2019/01-fuel-calculator/input.txt')
             assert.equal(result, 4943969)
         })
     })

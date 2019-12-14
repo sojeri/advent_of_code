@@ -17,7 +17,7 @@ describe('07-2-solution', () => {
             assert.equal(result, 18216)
         })
         it('should return 17519904 for puzzle input', () => {
-            let result = runCallbackAgainstFile(solution, '2019/07/input.txt')
+            let result = runCallbackAgainstFile(solution, '2019/07-intcode-patch2/input.txt')
             assert.equal(result, 17519904)
         })
     })
