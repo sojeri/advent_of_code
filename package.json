@@ -12,7 +12,8 @@
         "new": "./utils/js/createScaffold.js",
         "notes": "notes",
         "pretty": "prettier --write '{2015,2017,2018,utils}/{,**/}*.js'",
-        "test": "mocha '{,!(node_modules)/**!(templates)}/*test.js'"
+        "test": "mocha '{,!(node_modules)/**!(templates)}/*test.js'",
+        "watdo": "echo 'forgot how to use me between years? use `yarn new [year] [month]` :)'"
     },
     "husky": {
         "hooks": {
