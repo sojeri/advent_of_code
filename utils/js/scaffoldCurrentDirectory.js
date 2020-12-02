@@ -32,10 +32,15 @@ const dayMarker = '@@'
 const importMarker = '%%'
 const importIntcode =
     "const { addInput, getIntcodeComputer, loadProgram, runProgram, PAUSE_EXECUTION_MARKER, PROCESS_TERMINATED_MARKER, } = require('../intcode-computer')"
-function updateContent(buffer, name, is2019) {
+const importFileMarker = '##'
+function updateContent(buffer, name, is2019, dirName) {
     let content = buffer.toString()
     content = content.split(importMarker).join(is2019 ? importIntcode : '')
-    return content.split(dayMarker).join(name)
+    return content
+        .split(dayMarker)
+        .join(name)
+        .split(importFileMarker)
+        .join(dirName)
 }
 
 const templateFiles = ['solution.js', 'test.js']
@@ -48,6 +53,7 @@ function scaffoldCurrentDirectory(prefix) {
     let path = prefix.split(dirSeparator)
     let day = path.pop()
     let year = path[0]
+    let dayDir = path[1]
     createOutputPath(path)
 
     // read template file, looping through lines
@@ -66,7 +72,7 @@ function scaffoldCurrentDirectory(prefix) {
             // - if day line, replace marker with current directory number
             writeStreams.forEach((ws, i) => {
                 let projectName = day + templateVariants[i]
-                ws.write(updateContent(chunk, projectName, year == '2019'))
+                ws.write(updateContent(chunk, projectName, year == '2019', `${year}/${dayDir}`))
             })
         })
         readStream.on('end', () => {

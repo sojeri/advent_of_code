@@ -13,7 +13,10 @@
         "notes": "notes",
         "pretty": "prettier --write '{2015,2017,2018,utils}/{,**/}*.js'",
         "test": "mocha '{,!(node_modules)/**!(templates)}/*test.js'",
-        "watdo": "echo 'forgot how to use me between years? use `yarn new [year] [month]` :)'"
+        "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; yarn new",
+        "halp": "yarn run --silent watdo",
+        "how": "yarn run --silent watdo",
+        "what": "yarn run --silent watdo"
     },
     "husky": {
         "hooks": {
@@ -24,5 +27,6 @@
         "type": "git",
         "url": "git+https://github.com/sojeri/advent_of_code.git"
     },
-    "author": "Jeri Sommers <sojeri@uw.edu>"
+    "author": "Jeri Sommers <sojeri@uw.edu>",
+    "license": "MIT"
 }
