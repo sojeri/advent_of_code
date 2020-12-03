@@ -5,13 +5,13 @@ let solution = require('./@@solution')
 describe('@@solution', () => {
     describe('solution', () => {
         it('should return -1 for example input', () => {
-            assert.equal(solution(), -1)
+            assert.strictEqual(solution(), -1)
         })
         // it('should return -1 for example input', () => {
-        //     assert.equal(runCallbackAgainstFile(solution, '##/example.txt'), -1)
+        //     assert.strictEqual(runCallbackAgainstFile(solution, '##/example.txt'), -1)
         // })
         // it('should return -1 for example input', () => {
-        //     assert.equal(runCallbackAgainstFile(solution, '##/input.txt'), -1)
+        //     assert.strictEqual(runCallbackAgainstFile(solution, '##/input.txt'), -1)
         // })
     })
 })
