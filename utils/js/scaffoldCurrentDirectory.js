@@ -53,19 +53,15 @@ const templateVariants = ['-1-', '-2-']
  * test files. In addition, it creates empty example & input text files. :)
  * If `yarn new` was called with args `2020 11 example`, then this method
  * will scaffold in folder in `<project root>/2020/11-example`
- * @param {*} prefix the file path relative to project root, eg '2020/11-example/11'
+ * @param {*} param0 an unnamed object representing the desired path and file
+ * prefixes, eg { aocYear: '2020', aocDayDir: '11-example', aocDay: '11' }
  */
-function scaffoldCurrentDirectory(prefix) {
-    // get current directory number (eg 04)
-    let path = prefix.split(dirSeparator)
-    let day = path.pop()
-    let year = path[0]
-    let dayDir = path[1]
-    createOutputPath(path)
+function scaffoldCurrentDirectory({ aocYear, aocDayDir, aocDay }) {
+    createOutputPath([aocYear, aocDayDir])
+    const pathPrefix = `${aocYear}/${aocDayDir}/`
 
-    // read template file, looping through lines
     templateFiles.forEach(fileName => {
-        let writeFileNames = templateVariants.map(v => prefix + v + fileName)
+        let writeFileNames = templateVariants.map(v => pathPrefix + aocDay + v + fileName)
         writeFileNames.forEach(f => {
             if (fs.existsSync(f)) {
                 throw new Error(`directory previously scaffolded: ${f} already exists.`)
@@ -75,13 +71,12 @@ function scaffoldCurrentDirectory(prefix) {
         let writeStreams = writeFileNames.map(f => fs.createWriteStream(f))
         let readStream = fs.createReadStream(getTemplatePath() + fileName)
         readStream.on('data', chunk => {
-            // - for each line, write to scaffold file in current directory
-            // - if day line, replace marker with current directory number
             writeStreams.forEach((ws, i) => {
-                let projectName = day + templateVariants[i]
-                ws.write(updateContent(chunk, projectName, year == '2019', `${year}/${dayDir}`))
+                let projectName = aocDay + templateVariants[i]
+                ws.write(updateContent(chunk, projectName, aocYear == '2019', `${aocYear}/${aocDayDir}`))
             })
         })
+
         readStream.on('end', () => {
             writeStreams.forEach(ws => {
                 ws.end()
@@ -89,11 +84,10 @@ function scaffoldCurrentDirectory(prefix) {
         })
     })
 
-    prefix = prefix.slice(0, -2) // strip the day #
-    createEmptyFile(prefix + 'example.txt')
-    createEmptyFile(prefix + 'input.txt')
+    createEmptyFile(pathPrefix + 'example.txt')
+    createEmptyFile(pathPrefix + 'input.txt')
 
-    console.log(`scaffolded ${path.join(dirSeparator)}'s ${templateFiles}`)
+    console.log(`scaffolded ${pathPrefix}'s ${templateFiles}`)
 }
 
 function createEmptyFile(fileName) {

@@ -52,7 +52,7 @@ function createScaffold() {
         aocDayDir += args.join('-')
     }
 
-    scaffoldCurrentDirectory(`${aocYear}/${aocDayDir}/${aocDay}`)
+    scaffoldCurrentDirectory({ aocYear, aocDayDir, aocDay })
 }
 
 /**
