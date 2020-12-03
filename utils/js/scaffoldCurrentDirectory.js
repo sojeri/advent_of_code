@@ -48,6 +48,13 @@ const templateVariants = ['-1-', '-2-']
 
 // TODO: better error handling
 // TODO: this should have tests to expose what it does
+/**
+ * scaffoldCurrentDirectory creates the desired part 1 and part 2 solution and
+ * test files. In addition, it creates empty example & input text files. :)
+ * If `yarn new` was called with args `2020 11 example`, then this method
+ * will scaffold in folder in `<project root>/2020/11-example`
+ * @param {*} prefix the file path relative to project root, eg '2020/11-example/11'
+ */
 function scaffoldCurrentDirectory(prefix) {
     // get current directory number (eg 04)
     let path = prefix.split(dirSeparator)
@@ -81,7 +88,7 @@ function scaffoldCurrentDirectory(prefix) {
             })
         })
     })
-    
+
     prefix = prefix.slice(0, -2) // strip the day #
     createEmptyFile(prefix + 'example.txt')
     createEmptyFile(prefix + 'input.txt')
@@ -90,9 +97,9 @@ function scaffoldCurrentDirectory(prefix) {
 }
 
 function createEmptyFile(fileName) {
-  fs.open(fileName, 'w', (err) => {
-    if (err) throw err
-  })
+    fs.open(fileName, 'w', err => {
+        if (err) throw err
+    })
 }
 
 module.exports = scaffoldCurrentDirectory
