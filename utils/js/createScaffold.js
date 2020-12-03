@@ -4,10 +4,14 @@ const scaffoldCurrentDirectory = require('./scaffoldCurrentDirectory')
 
 const exampleCommandWithPlaceholders = 'yarn new <year> <day> [optional extra words for directory name]'
 const exampleCommand = '`yarn new 2017 01 find shortest path`'
-const exampleCommandOutput1 = '2017/01-find-shortest-path/01-solution.js'
-const exampleCommandOutput2 = '2017/01-find-shortest-path/01-test.js'
-const exampleCommandOutput3 = '2017/01-find-shortest-path/02-solution.js'
-const exampleCommandOutput4 = '2017/01-find-shortest-path/02-test.js'
+const outputFiles = [
+  '2017/01-find-shortest-path/01-solution.js',
+  '2017/01-find-shortest-path/01-test.js',
+  '2017/01-find-shortest-path/02-solution.js',
+  '2017/01-find-shortest-path/02-test.js',
+  '2017/01-find-shortest-path/example.txt',
+  '2017/01-find-shortest-path/input.txt'
+]
 
 function createScaffold() {
     let args = process.argv.slice(2)
@@ -15,11 +19,8 @@ function createScaffold() {
         console.log('You can use this command to scaffold a new directory:\n')
         console.log(`    ${exampleCommandWithPlaceholders}\n`)
         console.log(`eg, ${exampleCommand} would scaffold the following files:\n`)
-        console.log(`    * ${exampleCommandOutput1}`)
-        console.log(`    * ${exampleCommandOutput2}`)
-        console.log(`    * ${exampleCommandOutput3}`)
-        console.log(`    * ${exampleCommandOutput4}\n`)
-
+        outputFiles.forEach(o => { console.log(`    * ${o}`) })
+        console.log('\n')
         return
     }
 

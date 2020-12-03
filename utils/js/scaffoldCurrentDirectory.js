@@ -81,8 +81,18 @@ function scaffoldCurrentDirectory(prefix) {
             })
         })
     })
+    
+    prefix = prefix.slice(0, -2) // strip the day #
+    createEmptyFile(prefix + 'example.txt')
+    createEmptyFile(prefix + 'input.txt')
 
     console.log(`scaffolded ${path.join(dirSeparator)}'s ${templateFiles}`)
+}
+
+function createEmptyFile(fileName) {
+  fs.open(fileName, 'w', (err) => {
+    if (err) throw err
+  })
 }
 
 module.exports = scaffoldCurrentDirectory
