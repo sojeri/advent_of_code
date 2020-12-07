@@ -1,11 +1,13 @@
 let { parseLine } = require('./07-1-solution')
 
 /**
- * converts the passed in rules from an array of blobs to a more useful `{ <outer>: <inner> }` form. also creates the key set for ease of looping.
+ * converts the passed in rules from an array of blobs to a
+ * more useful `{ <outer>: <inner> }` form.
  * @param {*} rulesArray the array of `{ outer: {}, inner: {} }` blobs
  */
 function finishParsingRules(rulesArray) {
     const rulesObject = {}
+
     rulesArray.forEach(rule => {
         const outerType = rule.outer.type
         if (rulesObject[outerType]) {
@@ -21,31 +23,34 @@ function finishParsingRules(rulesArray) {
 /**
  * implements https://adventofcode.com/2020/day/7#part2
  * @param {*} input the puzzle input
- * @param {*} want the bag type to solve for
  */
-function solution(input, want = 'shiny gold') {
+function solution(input) {
     const parsedRules = input.map(parseLine)
     const ruleSet = finishParsingRules(parsedRules)
 
+    /**
+     * recursively crawls the ruleSet until it has finished
+     * calculating the number of bags within a bag
+     * @param {*} type the type of bag being calculated
+     * @param {*} howMany how many of that bag are desired
+     */
     function recursiveCrawl(type, howMany) {
         if (ruleSet[type][0].type === 'no other') {
             return howMany
         }
 
-        if (ruleSet[type]) {
-            let howManyMore = 0
+        let howManyMore = 0
 
-            ruleSet[type].forEach(inner => {
-                howManyMore += recursiveCrawl(inner.type, howMany * (inner.count || 1))
-            })
+        // this could break on bad input data,
+        // but the puzzle set & examples are clean :)
+        ruleSet[type].forEach(inner => {
+            howManyMore += recursiveCrawl(inner.type, howMany * inner.count)
+        })
 
-            return howMany + howManyMore
-        }
-
-        return howMany
+        return howMany + howManyMore
     }
 
-    return recursiveCrawl(want, 1) - 1 // don't count outer bag
+    return recursiveCrawl('shiny gold', 1) - 1 // don't count outer bag
 }
 
 module.exports = solution

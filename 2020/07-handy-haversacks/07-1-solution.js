@@ -7,15 +7,12 @@ const SPACE = ' '
  */
 function parseType(type) {
     type = type.split(SPACE)
-    let count
-    if (type.length === 4) {
-        count = Number(type.shift())
-    }
+    const count = type.length === 4 ? Number(type.shift()) : 1
 
     type.pop() // strip bag / bags from name
     type = type.join(SPACE)
 
-    return count ? { count, type } : { type }
+    return { count, type }
 }
 
 /**
@@ -38,9 +35,11 @@ function parseLine(line) {
 }
 
 /**
- * reverses the rules set to have inner point to what it can be contained by
- * returns a collection of keys like bagType: [couldBeInThisType, couldBeInAnotherType], eg 'bright white': ['light red', 'dark orange']
- * @param {*} parsedRules a collection of keys like
+ * reverses the rules set to have inner point to what it can be
+ * contained by. returns a collection of keys like `bagType:
+ * [couldBeInThisType, couldBeInAnotherType]`, eg `'bright white':
+ * ['light red', 'dark orange']`
+ * @param {*} parsedRules a collection of keys like what (@see parseLine) returns
  */
 function reverseRules(parsedRules) {
     const rules = {}
@@ -74,6 +73,11 @@ function solution(input, want = 'shiny gold') {
 
     let couldContain = {}
 
+    /**
+     * recursively crawls the parsedRules until it has finished
+     * calculating the types of bags that could contain a given bag
+     * @param {*} type the type of bag which could be contained
+     */
     function recursiveCrawl(type) {
         if (type === 'no other') {
             return
