@@ -2,7 +2,7 @@ const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
 let { parseLine, parseType, solution } = require('./07-1-solution')
 
-describe.only('07-1-solution', () => {
+describe('07-1-solution', () => {
     describe('parseType', () => {
         it('should return 2,shiny gold for "2 shiny gold bags"', () => {
             const expected = { count: 2, type: 'shiny gold' }

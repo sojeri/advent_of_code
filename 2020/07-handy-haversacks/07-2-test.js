@@ -2,7 +2,7 @@ const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
 let solution = require('./07-2-solution')
 
-describe.only('07-2-solution', () => {
+describe('07-2-solution', () => {
     describe('solution', () => {
         it('should return 32 for example input', () => {
             assert.strictEqual(runCallbackAgainstFile(solution, '2020/07-handy-haversacks/example.txt'), 32)
