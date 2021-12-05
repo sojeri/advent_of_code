@@ -1,32 +1,16 @@
 // https://adventofcode.com/2021/day/3
+const { findBitRate } = require('./03-2-solution')
 
 function solution(input) {
-    let bitData = []
+    let bitRates = []
 
-    // hydrate bitData
     for (let c = 0; c < input[0].length; c++) {
-        bitData.push(0)
+        bitRates[c] = findBitRate(input, c)
     }
 
-    // calculate bitData
-    input.forEach(word => {
-        for (let c = 0; c < word.length; c++) {
-            const char = word[c]
-            switch (char) {
-                case '0':
-                    bitData[c] = bitData[c] - 1
-                    break
-                case '1':
-                    bitData[c] = bitData[c] + 1
-                    break
-            }
-        }
-    })
-
-    // parse bitData
     let gammaRate = ''
     let epsilonRate = ''
-    bitData.forEach(calc => {
+    bitRates.forEach(calc => {
         if (calc > 0) {
             gammaRate += '1'
             epsilonRate += '0'
