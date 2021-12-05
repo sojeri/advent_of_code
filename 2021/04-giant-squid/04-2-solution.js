@@ -1,30 +1,6 @@
-//
+let { parse, NUMBER_MAPPER } = require('./04-2-solution')
+
 const DEBUG = false
-const NUMBERS_MATCHER = /\d+/g
-const NUMBER_MAPPER = s => Number(s)
-
-function parseLine(rawRow) {
-    ;/\d+/g
-    return rawRow.match(NUMBERS_MATCHER).map(NUMBER_MAPPER)
-}
-
-function parse(data) {
-    const output = {}
-    const visualBoard = []
-    const numbers = []
-    data.forEach((rawRowData, rowIndex) => {
-        const row = parseLine(rawRowData)
-        visualBoard.push([...row])
-        row.forEach((item, itemIndex) => {
-            numbers.push(item)
-            output[item] = {
-                row: rowIndex,
-                column: itemIndex,
-            }
-        })
-    })
-    return [output, visualBoard, numbers]
-}
 
 class Board {
     constructor(data) {

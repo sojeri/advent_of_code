@@ -119,4 +119,4 @@ function solution(rawInput, debug = false) {
     return winners[0].currentWinningScore
 }
 
-module.exports = { solution, Board }
+module.exports = { solution, Board, parse, NUMBER_MAPPER }
