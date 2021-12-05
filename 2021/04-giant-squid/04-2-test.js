@@ -1,6 +1,6 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let { solution, Board } = require('./04-2-solution')
+let { solution, StopAfterWinningBoard } = require('./04-2-solution')
 
 describe('04-2-solution', () => {
     describe('solution / answers', () => {
@@ -11,10 +11,10 @@ describe('04-2-solution', () => {
             assert.strictEqual(runCallbackAgainstFile(solution, '2021/04-giant-squid/input.txt'), 26878)
         })
     })
-    describe('Board -- a class representing a standard 5x5 bingo board', () => {
+    describe('StopAfterWinningBoard -- a class representing a standard 5x5 bingo board', () => {
         it('takes in an array of 5x5 bingo data, does not care about whitespace or order', () => {
             assert.doesNotThrow(() => {
-                new Board([
+                new StopAfterWinningBoard([
                     '1 2        3 4 5',
                     '11 22 33 44   55',
                     '99 88 77   66 50',
@@ -25,7 +25,7 @@ describe('04-2-solution', () => {
         })
 
         it('has a visual representation of the board', () => {
-            const board = new Board([
+            const board = new StopAfterWinningBoard([
                 '1 2        3 4 5',
                 '11 22 33 44   55',
                 '99 88 77   66 50',
@@ -44,7 +44,7 @@ describe('04-2-solution', () => {
 
         describe('.call()', () => {
             it('adds the called number to the tracking array -- if it was found on the board', () => {
-                const board = new Board([
+                const board = new StopAfterWinningBoard([
                     '1 2        3 4 5',
                     '11 22 33 44   55',
                     '99 88 77   66 50',
@@ -62,7 +62,7 @@ describe('04-2-solution', () => {
             })
 
             it('marks the spot on the visual board', () => {
-                const board = new Board([
+                const board = new StopAfterWinningBoard([
                     ' 1  2  3  4  5',
                     ' 6  7  8  9 10',
                     '11 12 13 14 15',
@@ -102,7 +102,7 @@ describe('04-2-solution', () => {
                 ])
             })
             it('updates column and row counts', () => {
-                const board = new Board([
+                const board = new StopAfterWinningBoard([
                     ' 1  2  3  4  5',
                     ' 6  7  8  9 10',
                     '11 12 13 14 15',
@@ -123,7 +123,7 @@ describe('04-2-solution', () => {
             })
             it('throws excitedly on encountering a bingo', () => {
                 // arrange winning board
-                const board = new Board([
+                const board = new StopAfterWinningBoard([
                     ' 1  2  3  4  5',
                     ' 6  7  8  9 10',
                     '11 12 13 14 15',
@@ -142,7 +142,7 @@ describe('04-2-solution', () => {
             describe('after winning', () => {
                 it("doesn't mark spots anymore", () => {
                     // arrange winning board
-                    const board = new Board([
+                    const board = new StopAfterWinningBoard([
                         ' 1  2  3  4  5',
                         ' 6  7  8  9 10',
                         '11 12 13 14 15',
@@ -184,7 +184,7 @@ describe('04-2-solution', () => {
                 })
                 it("doesn't update column and row counts anymore", () => {
                     // arrange winning board
-                    const board = new Board([
+                    const board = new StopAfterWinningBoard([
                         ' 1  2  3  4  5',
                         ' 6  7  8  9 10',
                         '11 12 13 14 15',
@@ -217,7 +217,7 @@ describe('04-2-solution', () => {
 
                 it("doesn't add numbers to the tracking array anymore", () => {
                     // arrange winning board
-                    const board = new Board([
+                    const board = new StopAfterWinningBoard([
                         ' 1  2  3  4  5',
                         ' 6  7  8  9 10',
                         '11 12 13 14 15',
@@ -250,14 +250,26 @@ describe('04-2-solution', () => {
 
         describe('.score()', () => {
             it('sums the remaining unmarked numbers on the board & multiplies that by the given number', () => {
-                const board = new Board(['1 1 1 1 1', '1 1 1 1 1', '1 1 1 1 1', '1 1 1 1 1', '1 1 1 1 1'])
-                const anotherBoard = new Board(['5 5 5 5 5', '5 5 5 5 5', '5 5 5 5 5', '5 5 5 5 5', '5 5 5 5 5'])
+                const board = new StopAfterWinningBoard([
+                    '1 1 1 1 1',
+                    '1 1 1 1 1',
+                    '1 1 1 1 1',
+                    '1 1 1 1 1',
+                    '1 1 1 1 1',
+                ])
+                const anotherStopAfterWinningBoard = new StopAfterWinningBoard([
+                    '5 5 5 5 5',
+                    '5 5 5 5 5',
+                    '5 5 5 5 5',
+                    '5 5 5 5 5',
+                    '5 5 5 5 5',
+                ])
 
                 assert.strictEqual(board.score(1), 25)
                 assert.strictEqual(board.score(2), 50)
                 assert.strictEqual(board.score(10), 250)
-                assert.strictEqual(anotherBoard.score(1), 125)
-                assert.strictEqual(anotherBoard.score(5), 625)
+                assert.strictEqual(anotherStopAfterWinningBoard.score(1), 125)
+                assert.strictEqual(anotherStopAfterWinningBoard.score(5), 625)
             })
         })
     })
