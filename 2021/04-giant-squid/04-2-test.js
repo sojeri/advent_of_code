@@ -1,14 +1,14 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let { solution, StopAfterWinningBoard } = require('./04-2-solution')
+let { solutionV2, StopAfterWinningBoard } = require('./04-2-solution')
 
-describe('04-2-solution', () => {
-    describe('solution / answers', () => {
+describe('04-2-solutionV2', () => {
+    describe('solutionV2 / answers', () => {
         it('should return 1924 for example input', () => {
-            assert.strictEqual(runCallbackAgainstFile(solution, '2021/04-giant-squid/example.txt'), 1924)
+            assert.strictEqual(runCallbackAgainstFile(solutionV2, '2021/04-giant-squid/example.txt'), 1924)
         })
         it('should return 26878 for puzzle input', () => {
-            assert.strictEqual(runCallbackAgainstFile(solution, '2021/04-giant-squid/input.txt'), 26878)
+            assert.strictEqual(runCallbackAgainstFile(solutionV2, '2021/04-giant-squid/input.txt'), 26878)
         })
     })
     describe('StopAfterWinningBoard -- a class representing a standard 5x5 bingo board', () => {

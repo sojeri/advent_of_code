@@ -1,7 +1,12 @@
-const { Board, NUMBER_MAPPER } = require('./04-1-solution')
+const { solution, Board } = require('./04-1-solution')
 
 const DEBUG = false
 
+/**
+ * a class representing a standard 5x5 bingo board,
+ * one which is finaly smart enough to stop playing after
+ * it hits the win condition 😅
+ */
 class StopAfterWinningBoard extends Board {
     constructor(data) {
         super(data)
@@ -18,48 +23,24 @@ class StopAfterWinningBoard extends Board {
     }
 
     call(number) {
-        if (!this.has(number) || this.hasAlreadyWon) return
-        return super.call(number)
+        return this.hasAlreadyWon ? null : super.call(number)
+    }
+
+    score(number) {
+        return super.score(number)
     }
 }
 
-function solution(rawInput) {
-    // pull bingo numbers
-    const bingoNumbers = rawInput[0].split(',').map(NUMBER_MAPPER)
+function shouldStopPlaying(_) {
+    return false
+}
 
-    // pull bingo boards
-    const boards = []
-    for (let lineNo = 2; lineNo < rawInput.length; lineNo += 6) {
-        const nextBoardInput = rawInput.slice(lineNo, lineNo + 5)
-        boards.push(new StopAfterWinningBoard(nextBoardInput))
-    }
-
-    // play game
-    let winners = []
-    for (let step = 0; step < bingoNumbers.length; step++) {
-        const currentNumber = bingoNumbers[step]
-        if (DEBUG) console.log('calling', currentNumber)
-
-        boards.forEach((board, boardIndex) => {
-            try {
-                board.call(currentNumber)
-            } catch {
-                let winningScore = board.score(currentNumber)
-                winners.push({
-                    currentNumber,
-                    boardIndex,
-                    winningScore,
-                })
-            }
-        })
-    }
-
-    if (DEBUG)
-        winners.forEach(w => {
-            console.log(w)
-        })
-
+function getBestWinningScore(winners) {
     return winners.pop().winningScore
 }
 
-module.exports = { solution, StopAfterWinningBoard }
+function solutionV2(rawInput) {
+    return solution(rawInput, DEBUG, StopAfterWinningBoard, shouldStopPlaying, getBestWinningScore)
+}
+
+module.exports = { solutionV2, StopAfterWinningBoard }

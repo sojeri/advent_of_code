@@ -6,6 +6,12 @@ function parseLine(rawRow) {
     return rawRow.match(NUMBERS_MATCHER).map(NUMBER_MAPPER)
 }
 
+/**
+ * converts the raw board input into a dictionary, mapping the board numbers
+ * to where they are located on the board grid.
+ * @param {*} data the raw board, eg ['1 2 3 4 5', '6 7 8 9 10', ...]
+ * @returns the number => grid location map, the visual board, and an array of the numbers
+ */
 function parse(data) {
     const output = {}
     const visualBoard = []
@@ -24,6 +30,9 @@ function parse(data) {
     return [output, visualBoard, numbers]
 }
 
+/**
+ * a class representing a standard 5x5 bingo board
+ */
 class Board {
     constructor(data, debug = false) {
         const [parsedData, rawBoard, numbers] = parse(data)
@@ -76,7 +85,21 @@ class Board {
     }
 }
 
-function solution(rawInput, debug = false) {
+function shouldStopPlaying(winners) {
+    return winners.length
+}
+
+function getBestWinningScore(winners) {
+    return winners[0].winningScore
+}
+
+function solution(
+    rawInput,
+    debug = false,
+    BingoBoard = Board,
+    shouldStopPlayingCb = shouldStopPlaying,
+    getBestWinningScoreCb = getBestWinningScore
+) {
     // pull bingo numbers
     const bingoNumbers = rawInput[0].split(',').map(NUMBER_MAPPER)
 
@@ -84,12 +107,11 @@ function solution(rawInput, debug = false) {
     const boards = []
     for (let lineNo = 2; lineNo < rawInput.length; lineNo += 6) {
         const nextBoardInput = rawInput.slice(lineNo, lineNo + 5)
-        boards.push(new Board(nextBoardInput))
+        boards.push(new BingoBoard(nextBoardInput))
     }
 
     // play game
     let winners = []
-    let winningScore = -1
     for (let step = 0; step < bingoNumbers.length; step++) {
         const currentNumber = bingoNumbers[step]
         if (debug) console.log('calling', currentNumber)
@@ -98,25 +120,25 @@ function solution(rawInput, debug = false) {
             try {
                 board.call(currentNumber)
             } catch {
-                let currentWinningScore = board.score(currentNumber)
+                let winningScore = board.score(currentNumber)
                 winners.push({
                     currentNumber,
                     boardIndex,
-                    currentWinningScore,
+                    winningScore,
                 })
-                winningScore = currentWinningScore > winningScore ? currentWinningScore : winningScore
             }
         })
 
-        if (winners.length) break
+        if (shouldStopPlayingCb(winners)) break
     }
 
-    if (debug)
+    if (debug) {
         winners.forEach(w => {
             console.log(w)
         })
+    }
 
-    return winners[0].currentWinningScore
+    return getBestWinningScoreCb(winners)
 }
 
 module.exports = { solution, Board, NUMBER_MAPPER }
