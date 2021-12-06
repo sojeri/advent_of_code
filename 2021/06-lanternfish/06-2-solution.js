@@ -26,41 +26,18 @@ function hydrateStartingPop(input) {
 function simulateLanternfish(startingPop, duration, debug = false) {
     let currentPop = hydrateStartingPop(startingPop)
     let day = 0
+    const TOTAL_DISTINCT_FISH_PHASES = 9
     while (day < duration) {
-        const hatchlings = {
-            8: 0,
-            7: 0,
-            6: 0,
-            5: 0,
-            4: 0,
-            3: 0,
-            2: 0,
-            1: 0,
-            0: 0,
-        }
+        const hatchlings = {}
+        BASE_KEYS.forEach(base => (hatchlings[base] = 0))
         BASE_KEYS.forEach(fishValue => {
-            const fishValueAfterFourDays = fishValue - 4
+            const newFishValue = fishValue - 4
             const fishCount = currentPop[fishValue]
-            switch (fishValueAfterFourDays) {
-                case -1:
-                    hatchlings[6] += fishCount
-                    hatchlings[8] += fishCount
-                    break
-                case -2:
-                    hatchlings[5] += fishCount
-                    hatchlings[7] += fishCount
-                    break
-                case -3:
-                    hatchlings[4] += fishCount
-                    hatchlings[6] += fishCount
-                    break
-                case -4:
-                    hatchlings[3] += fishCount
-                    hatchlings[5] += fishCount
-                    break
-                default:
-                    hatchlings[fishValueAfterFourDays] += fishCount
-                    break
+            if (newFishValue < 0) {
+                hatchlings[TOTAL_DISTINCT_FISH_PHASES + newFishValue] += fishCount
+                hatchlings[TOTAL_DISTINCT_FISH_PHASES + newFishValue - 2] += fishCount
+            } else {
+                hatchlings[newFishValue] += fishCount
             }
         })
 
