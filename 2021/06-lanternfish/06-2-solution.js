@@ -20,7 +20,7 @@ function hydrateStartingPop(input) {
 /**
  * simulates lanternfish population growth over time
  * @param {*} startingPop the starting lanternfish population
- * @param {*} duration the # of days to simulate the population over
+ * @param {*} duration the # of days to simulate the population over MUST BE A MULTIPLE OF FOUR TO GET ACCURATE DATA
  * @returns
  */
 function simulateLanternfish(startingPop, duration, debug = false) {
