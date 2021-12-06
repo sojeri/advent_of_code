@@ -2,7 +2,7 @@ const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
 const { solution, findCO2ScrubberRate, findOxygenGeneratorRate } = require('./03-2-solution')
 
-describe.only('03-2-solution', () => {
+describe('03-2-solution', () => {
     describe('findOxygenGeneratorRate', () => {
         it('should return 10111 for example input', () => {
             assert.strictEqual(
