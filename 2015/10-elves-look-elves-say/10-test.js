@@ -1,7 +1,7 @@
 const assert = require('assert')
 const { solution, looper, findLookSay } = require('./10-solution')
 
-describe.only('10-solution', () => {
+describe('10-solution', () => {
     describe('findLookSay', () => {
         it('should return 11 for input 1', () => {
             assert.strictEqual(findLookSay('1').join(''), '11')
