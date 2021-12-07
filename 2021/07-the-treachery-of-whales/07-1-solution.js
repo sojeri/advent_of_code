@@ -22,6 +22,12 @@ function average(numArr) {
     return [mean, min, max]
 }
 
+/**
+ * not really necessary for part 1, but I needed this so I could
+ * override it in part 2. none of the remaining logic changed. :)
+ * @param {*} n
+ * @returns
+ */
 const getSimpleFuelCost = n => {
     return n
 }
