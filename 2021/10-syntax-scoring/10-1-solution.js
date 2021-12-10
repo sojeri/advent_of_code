@@ -1,24 +1,13 @@
 // https://adventofcode.com/2021/day/10
 
-const round = {
-    open: '(',
-    close: ')',
-    score: 3,
-}
-const square = {
-    open: '[',
-    close: ']',
-    score: 57,
-}
-const curly = {
-    open: '{',
-    close: '}',
-    score: 1197,
-}
-const pointed = {
-    open: '<',
-    close: '>',
-    score: 25137,
+// ordered lists using position as ID to represent different brace info
+// eg 0 for all three is about round braces
+const OPENERS = ['(', '[', '{', '<']
+const CLOSERS = [')', ']', '}', '>']
+const SCORES = [3, 57, 1197, 25137]
+
+const isOpen = char => {
+    return OPENERS.indexOf(char) > -1
 }
 
 /**
@@ -30,52 +19,23 @@ function getSyntaxScore(line) {
     let seen = []
     for (let c = 0; c < line.length; c++) {
         const char = line[c]
-        const lastSeen = seen[seen.length - 1]
 
-        switch (char) {
-            case round.open:
-                seen.push(round.open)
-                continue
-            case square.open:
-                seen.push(square.open)
-                continue
-            case curly.open:
-                seen.push(curly.open)
-                continue
-            case pointed.open:
-                seen.push(pointed.open)
-                continue
-            case round.close:
-                if (lastSeen !== round.open) {
-                    return round.score
-                } else {
-                    seen.pop()
-                    continue
-                }
-            case square.close:
-                if (lastSeen !== square.open) {
-                    return square.score
-                } else {
-                    seen.pop()
-                    continue
-                }
-            case curly.close:
-                if (lastSeen !== curly.open) {
-                    return curly.score
-                } else {
-                    seen.pop()
-                    continue
-                }
-            case pointed.close:
-                if (lastSeen !== pointed.open) {
-                    return pointed.score
-                } else {
-                    seen.pop()
-                    continue
-                }
-            default:
-                throw new Error('and who is this shady character???? @_@')
+        if (isOpen(char)) {
+            seen.push(char)
+            continue
         }
+
+        const knownChar = CLOSERS.indexOf(char)
+        if (knownChar === -1) {
+            throw new Error(`and who is this shady character???? @_@ '${char}'`)
+        }
+
+        const lastSeen = OPENERS.indexOf(seen[seen.length - 1])
+        if (lastSeen !== knownChar) {
+            return SCORES[knownChar]
+        }
+
+        seen.pop()
     }
 
     return 0
@@ -89,4 +49,10 @@ function solution(input) {
     return syntaxScore
 }
 
-module.exports = { getSyntaxScore, solution }
+module.exports = {
+    OPENERS,
+    CLOSERS,
+    isOpen,
+    getSyntaxScore,
+    solution,
+}

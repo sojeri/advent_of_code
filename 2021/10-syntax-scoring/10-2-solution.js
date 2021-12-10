@@ -1,59 +1,37 @@
 // https://adventofcode.com/2021/day/10#part2
 const { ascendingSort } = require('../../utils/js/sorts')
+const { OPENERS, CLOSERS, isOpen } = require('./10-1-solution')
 
-const round = {
-    open: '(',
-    close: ')',
-    score: 1,
-}
-const square = {
-    open: '[',
-    close: ']',
-    score: 2,
-}
-const curly = {
-    open: '{',
-    close: '}',
-    score: 3,
-}
-const pointed = {
-    open: '<',
-    close: '>',
-    score: 4,
-}
+// ordered lists using position as ID to represent different brace info
+// eg 0 for all three is about round braces
+const SCORES = [1, 2, 3, 4]
 
 /**
  * scores a single line
  * @param {*} line a line of braces, eg [({(<(())[]>[[{[]{<()<>>
- * @returns a score based on first illegal character found -- or 0 if none
+ * @returns a score for incomplete lines based on missing characters -- or 0 for anything else
  */
 function getSyntaxScore(line) {
     let seen = []
     for (let c = 0; c < line.length; c++) {
         const char = line[c]
-        const lastSeen = seen[seen.length - 1]
 
-        switch (char) {
-            case round.close:
-                if (lastSeen !== round.open) return [0, null]
-                seen.pop()
-                continue
-            case square.close:
-                if (lastSeen !== square.open) return [0, null]
-                seen.pop()
-                continue
-            case curly.close:
-                if (lastSeen !== curly.open) return [0, null]
-                seen.pop()
-                continue
-            case pointed.close:
-                if (lastSeen !== pointed.open) return [0, null]
-                seen.pop()
-                continue
-            default:
-                seen.push(char)
-                continue
+        if (isOpen(char)) {
+            seen.push(char)
+            continue
         }
+
+        const braceId = CLOSERS.indexOf(char)
+        if (braceId === -1) {
+            throw new Error(`and who is this shady character???? @_@ '${char}'`)
+        }
+
+        const lastSeenId = OPENERS.indexOf(seen[seen.length - 1])
+        if (lastSeenId !== braceId) {
+            return [0, null]
+        }
+
+        seen.pop()
     }
 
     let score = 0
@@ -62,24 +40,13 @@ function getSyntaxScore(line) {
         const char = seen[s]
         score *= 5
 
-        switch (char) {
-            case round.open:
-                score += round.score
-                completionString.push(round.close)
-                break
-            case square.open:
-                score += square.score
-                completionString.push(square.close)
-                break
-            case curly.open:
-                score += curly.score
-                completionString.push(curly.close)
-                break
-            case pointed.open:
-                score += pointed.score
-                completionString.push(pointed.close)
-                break
+        const charId = OPENERS.indexOf(char)
+        if (charId === -1) {
+            throw new Error(`and who is this shady character???? @_@ '${char}'`)
         }
+
+        score += SCORES[charId]
+        completionString.push(CLOSERS[charId])
     }
 
     return [score, completionString.join('')]
@@ -98,4 +65,7 @@ function solution(input) {
     return scores[midpoint]
 }
 
-module.exports = { getSyntaxScore, solution }
+module.exports = {
+    getSyntaxScore,
+    solution,
+}
