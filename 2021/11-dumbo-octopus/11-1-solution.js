@@ -1,6 +1,10 @@
-//
+// https://adventofcode.com/2021/day/11
 
 const FLASH_POINT = 10
+
+// these adorable scamps are used to print the swarm
+const SHINIES = ['✨', '🐋', '🦈', '🐟', '🐠', '🐡', '🦞', '🦀', '🦑', '🐙']
+
 class OctopusGrid {
     constructor(rawData) {
         const grid = []
@@ -48,7 +52,7 @@ class OctopusGrid {
         })
     }
 
-    step() {
+    step(shouldPrint = false) {
         // regular incrementing which handles flash
         for (let rowIndex = 0; rowIndex < this.rowMax; rowIndex++) {
             for (let itemIndex = 0; itemIndex < this.itemMax; itemIndex++) {
@@ -65,7 +69,7 @@ class OctopusGrid {
         }
 
         // print the glorious swarm
-        this.printFancy()
+        if (shouldPrint) this.printFancy()
     }
 
     print() {
@@ -79,13 +83,12 @@ class OctopusGrid {
         this.grid.forEach(row => {
             let output = ''
             row.forEach(item => {
-                output += shinies[item]
+                output += SHINIES[item]
             })
             console.log(output)
         })
     }
 }
-const shinies = ['✨', '🐋', '🦈', '🐟', '🐠', '🐡', '🦞', '🦀', '🐙', '🦑']
 
 function solution(input, steps = 100) {
     const octopusSwarm = new OctopusGrid(input)
@@ -96,4 +99,4 @@ function solution(input, steps = 100) {
     return octopusSwarm.flashCount
 }
 
-module.exports = solution
+module.exports = { OctopusGrid, solution }

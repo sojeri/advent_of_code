@@ -1,8 +1,8 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let solution = require('./11-1-solution')
+let { solution } = require('./11-1-solution')
 
-describe.only('11-1-solution', () => {
+describe('11-1-solution', () => {
     describe('solution', () => {
         it('should return 9 for example 999,919,999 input', () => {
             assert.strictEqual(solution(['11111', '19991', '19191', '19991', '11111'], 1), 9)
