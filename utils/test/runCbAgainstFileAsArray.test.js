@@ -20,12 +20,26 @@ describe('runCbAgainstFileAsArray()', () => {
     const trailingNewLineFile = 'foo/baz/trailingNewLine.txt'
     const noTrailingNewLine = Buffer.from('1\n2\n3')
     const trailingNewLine = Buffer.from('1\n2\n3\n')
+    const windowsNewLine = Buffer.from('1\r\n2\r\n3')
 
     it('should return the file contents as an array', () => {
         sinon
             .stub(fs, 'readFileSync')
             .withArgs(noTrailingNewLineFile)
             .returns(noTrailingNewLine)
+
+        let result = runCbAgainstFileAsArray(returnArrayUnchanged, noTrailingNewLineFile)
+        assert.equal(result.length, 3)
+        assert.equal(result.pop(), '3')
+
+        fs.readFileSync.restore()
+    })
+
+    it('should treat windows newline the same as unix', () => {
+        sinon
+            .stub(fs, 'readFileSync')
+            .withArgs(noTrailingNewLineFile)
+            .returns(windowsNewLine)
 
         let result = runCbAgainstFileAsArray(returnArrayUnchanged, noTrailingNewLineFile)
         assert.equal(result.length, 3)

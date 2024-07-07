@@ -8,7 +8,12 @@ const fs = require('fs')
  */
 function runCallbackAgainstFileAsArray(callback, fileName = 'input.txt', sanitizeInput = false) {
     let fileContents = fs.readFileSync(fileName)
-    fileContents = fileContents.toString().split('\n')
+    if (fileContents.indexOf('\r') > -1) {
+        fileContents = fileContents.toString().split('\r\n')
+    } else {
+        fileContents = fileContents.toString().split('\n')
+    }
+
     if (fileContents[fileContents.length - 1] == '') {
         fileContents.pop()
     }
