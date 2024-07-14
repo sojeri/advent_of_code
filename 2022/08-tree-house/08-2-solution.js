@@ -20,37 +20,18 @@ function solution(trees) {
     const left = getVisibleFromLeft(trees, xMax, yMax)
     const right = getVisibleFromRight(trees, xMax, yMax)
 
-    const output = trees.map(() => [])
     for (let y = 0; y <= yMax; y++) {
         for (let x = 0; x <= xMax; x++) {
             const visibleScore = above[y][x] * below[y][x] * left[y][x] * right[y][x]
-            output[y][x] = visibleScore
             if (visibleScore > max) {
-                // console.log('new max', {visibleScore, x, y})
-                // console.log(
-                //     'above', above[y][x],
-                //     'below', below[y][x],
-                //     'left', left[y][x],
-                //     'right', right[y][x],
-                // )
                 max = visibleScore
             }
         }
     }
-
-    // log({trees})
     return max
 }
 
-const log = ({ trees, counts }) => {
-    if (trees) trees.forEach(r => console.log(r))
-
-    if (counts) {
-        counts.forEach(row => {
-            console.log(row.join('.'))
-        })
-    }
-}
+const HEIGHTS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 function getVisibleFromAbove(grid, xMax, yMax) {
     const visibility = grid.map(() => [])
@@ -109,8 +90,6 @@ function getVisibleFromBelow(grid, xMax, yMax) {
     }
     return visibility
 }
-
-const HEIGHTS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 function getVisibleFromRight(grid, xMax, yMax) {
     const visibility = grid.map(() => [])

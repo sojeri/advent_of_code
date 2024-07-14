@@ -20,29 +20,13 @@ function solution(trees) {
     const left = getVisibleFromLeft(trees, xMax, yMax)
     const right = getVisibleFromRight(trees, xMax, yMax)
 
-    const output = trees.map(() => [])
     for (let y = 0; y <= yMax; y++) {
         for (let x = 0; x <= xMax; x++) {
             const isVisible = above[y][x] || below[y][x] || left[y][x] || right[y][x]
-            output[y][x] = isVisible
             if (isVisible) visible++
         }
     }
     return visible
-}
-
-const log = ({ trees, visible }) => {
-    if (trees) trees.forEach(r => console.log(r))
-
-    if (visible) {
-        visible.forEach(row => {
-            let output = ''
-            row.forEach(tree => {
-                output += tree ? 'V' : '.'
-            })
-            console.log(output)
-        })
-    }
 }
 
 function getVisibleFromAbove(grid, xMax, yMax) {

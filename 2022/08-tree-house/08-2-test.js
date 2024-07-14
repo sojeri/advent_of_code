@@ -1,13 +1,7 @@
 const assert = require('assert')
 let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let {
-    solution,
-    getVisibleFromLeft,
-    getVisibleFromRight,
-    getVisibleFromAbove,
-    getVisibleFromBelow,
-} = require('./08-2-solution')
-describe.only('08-2-solution', () => {
+let { solution, getVisibleFromRight } = require('./08-2-solution')
+describe('08-2-solution', () => {
     describe('getVisibleFromRight', () => {
         it('should return [2,1,1,1,0] for "30373"', () => {
             const expected = [2, 1, 1, 1, 0]
