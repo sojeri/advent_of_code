@@ -1,6 +1,7 @@
 /**
- *
+ *https://adventofcode.com/2022/day/9
  * @param {*} moves | a list of moves the head of the rope makes
+ * @returns how many tail touches the grid
  */
 function solution(moves) {
     const head = { x: 0, y: 0 },

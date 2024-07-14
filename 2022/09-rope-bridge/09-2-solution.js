@@ -1,6 +1,7 @@
 /**
- *
+ * https://adventofcode.com/2022/day/9#part2
  * @param {*} moves | a list of moves the head of the rope makes
+ * @returns how many places the final knot (in a series of 10) touches in the grid
  */
 function solution(moves) {
     const knots = []
@@ -11,10 +12,10 @@ function solution(moves) {
     moves.forEach(m => {
         const [dir, stepsStr] = m.split(' ')
         const steps = Number.parseInt(stepsStr)
-        for (let h = 0; h + 1 < knots.length; h++) {
-            const head = knots[h],
-                tail = knots[h + 1]
-            for (let i = 0; i < steps; i++) {
+        for (let i = 0; i < steps; i++) {
+            for (let h = 0; h + 1 < knots.length; h++) {
+                const head = knots[h],
+                    tail = knots[h + 1]
                 // only move real head; other knots move as tails
                 if (h == 0) {
                     switch (dir) {
@@ -71,7 +72,6 @@ function solution(moves) {
                     tail.x += 1
                     tail.y += head.y < tail.y ? -1 : 1
                 }
-                // console.log('after move', {dir, steps, i, head, tail})
                 if (h + 2 === knots.length) seen.add(`${tail.x},${tail.y}`)
             }
         }
