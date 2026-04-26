@@ -1,6 +1,6 @@
 const assert = require('assert')
-let runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
-let solution = require('./@@solution')
+const runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
+const { solution } = require('./@@solution')
 
 describe.only('@@solution', () => {
     describe('solution', () => {
