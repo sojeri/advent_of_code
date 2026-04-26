@@ -2,7 +2,7 @@ const assert = require('assert')
 const runCallbackAgainstFile = require('../../utils/js/runCbAgainstFileAsArray')
 const { solution, lazyArgsDecode } = require('./09-2-solution')
 
-describe.only('09-2-solution', () => {
+describe('09-2-solution', () => {
     describe('lazyArgsDecode', () => {
         // key test cases
         it('should return 20 for `X(8x2)(3x3)ABCY`', () => {
