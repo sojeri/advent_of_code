@@ -1,42 +1,41 @@
 {
-    "devDependencies": {
-        "husky": "^3.1.0",
-        "lodash": "^4.18.0",
-        "mocha": "^5.2.0",
-        "notes": "0.0.4",
-        "prettier": "1.19.1",
-        "pretty-quick": "^2.0.1",
-        "sinon": "^7.2.2"
-    },
-    "resolutions": {
-        "cross-spawn": "^6.0.6",
-        "diff": "^3.5.1",
-        "js-yaml": "^3.14.2",
-        "lodash": "^4.18.0",
-        "minimatch": "^3.1.4",
-        "minimist": "^0.2.1",
-        "path-to-regexp": "^1.9.0"
-    },
-    "scripts": {
-        "fixNew": "chmod -x ./utils/js/createScaffold.js",
-        "new": "./utils/js/createScaffold.js",
-        "notes": "notes",
-        "pretty": "prettier --write '{2015,2017,2018,utils}/{,**/}*.js'",
-        "test": "mocha '{,!(node_modules)/**!(templates)}/*test.js'",
-        "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; yarn new",
-        "halp": "yarn run --silent watdo",
-        "how": "yarn run --silent watdo",
-        "what": "yarn run --silent watdo"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/sojeri/advent_of_code.git"
-    },
-    "author": "Jeri Sommers <sojeri@uw.edu>",
-    "license": "MIT"
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lodash": "^4.18.0",
+    "mocha": "^10.0.0",
+    "notes": "0.0.4",
+    "prettier": "1.19.1",
+    "pretty-quick": "^2.0.1",
+    "sinon": "^7.2.2"
+  },
+  "resolutions": {
+    "cross-spawn": "^6.0.6",
+    "debug": "^3.2.7",
+    "diff": "^3.5.1",
+    "js-yaml": "^3.14.2",
+    "lodash": "^4.18.0",
+    "minimatch": "^3.1.4",
+    "minimist": "^0.2.1",
+    "nanoid": "^3.3.8",
+    "path-to-regexp": "^1.9.0",
+    "serialize-javascript": "^7.0.3"
+  },
+  "scripts": {
+    "fixNew": "chmod -x ./utils/js/createScaffold.js",
+    "new": "./utils/js/createScaffold.js",
+    "notes": "notes",
+    "pretty": "prettier --write '{2015,2017,2018,utils}/{,**/}*.js'",
+    "test": "mocha '{,!(node_modules)/**!(templates)}/*test.js'",
+    "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; yarn new",
+    "halp": "yarn run --silent watdo",
+    "how": "yarn run --silent watdo",
+    "what": "yarn run --silent watdo",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sojeri/advent_of_code.git"
+  },
+  "author": "Jeri Sommers 🐍 <some.jeriATgmail.com>",
+  "license": "MIT"
 }
