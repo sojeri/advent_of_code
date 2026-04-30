@@ -1,0 +1,9 @@
+ABBA[dancing queen]friday night
+dancing queen[ABBA]
+ABB[dancing queen]A
+abba[mnop]qrst
+abcd[bddb]xyyx
+aaaa[qwer]tyui
+ioxxoj[asdfgh]zxcvbn
+ioxxoj[asdfgh]zxcvbn[abba]
+ioxxojasdfghzxcvbnabba
