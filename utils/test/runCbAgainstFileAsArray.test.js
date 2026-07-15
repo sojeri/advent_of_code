@@ -23,10 +23,7 @@ describe('runCbAgainstFileAsArray()', () => {
     const windowsNewLine = Buffer.from('1\r\n2\r\n3')
 
     it('should return the file contents as an array', () => {
-        sinon
-            .stub(fs, 'readFileSync')
-            .withArgs(noTrailingNewLineFile)
-            .returns(noTrailingNewLine)
+        sinon.stub(fs, 'readFileSync').withArgs(noTrailingNewLineFile).returns(noTrailingNewLine)
 
         let result = runCbAgainstFileAsArray(returnArrayUnchanged, noTrailingNewLineFile)
         assert.equal(result.length, 3)
@@ -36,10 +33,7 @@ describe('runCbAgainstFileAsArray()', () => {
     })
 
     it('should treat windows newline the same as unix', () => {
-        sinon
-            .stub(fs, 'readFileSync')
-            .withArgs(noTrailingNewLineFile)
-            .returns(windowsNewLine)
+        sinon.stub(fs, 'readFileSync').withArgs(noTrailingNewLineFile).returns(windowsNewLine)
 
         let result = runCbAgainstFileAsArray(returnArrayUnchanged, noTrailingNewLineFile)
         assert.equal(result.length, 3)
@@ -49,10 +43,7 @@ describe('runCbAgainstFileAsArray()', () => {
     })
 
     it('should not include a trailing new line', () => {
-        sinon
-            .stub(fs, 'readFileSync')
-            .withArgs(trailingNewLineFile)
-            .returns(trailingNewLine)
+        sinon.stub(fs, 'readFileSync').withArgs(trailingNewLineFile).returns(trailingNewLine)
 
         let result = runCbAgainstFileAsArray(returnArrayUnchanged, trailingNewLineFile)
         assert.equal(result.length, 3)
@@ -62,10 +53,7 @@ describe('runCbAgainstFileAsArray()', () => {
     })
 
     it('should run the callback fn against the array', () => {
-        sinon
-            .stub(fs, 'readFileSync')
-            .withArgs(trailingNewLineFile)
-            .returns(trailingNewLine)
+        sinon.stub(fs, 'readFileSync').withArgs(trailingNewLineFile).returns(trailingNewLine)
 
         assert.equal(runCbAgainstFileAsArray(total, trailingNewLineFile), 6)
 

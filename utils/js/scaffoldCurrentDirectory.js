@@ -36,11 +36,7 @@ const importFileMarker = '##'
 function updateContent(buffer, name, is2019, dirName) {
     let content = buffer.toString()
     content = content.split(importMarker).join(is2019 ? importIntcode : '')
-    return content
-        .split(dayMarker)
-        .join(name)
-        .split(importFileMarker)
-        .join(dirName)
+    return content.split(dayMarker).join(name).split(importFileMarker).join(dirName)
 }
 
 const templateFiles = ['solution.js', 'test.js']

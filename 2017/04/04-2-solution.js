@@ -11,10 +11,7 @@ function areNoWordsAnagrams(passphraseString) {
     let unverifiedWords = passphraseString.split(' ')
     let alreadyContains = {}
     for (let w = 0; w < unverifiedWords.length; w++) {
-        let word = unverifiedWords[w]
-            .split('')
-            .sort(alphabetically)
-            .join('')
+        let word = unverifiedWords[w].split('').sort(alphabetically).join('')
         if (alreadyContains[word]) {
             return false
         }
