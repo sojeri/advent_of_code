@@ -24,6 +24,7 @@
         "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; yarn new",
         "halp": "yarn run --silent watdo",
         "how": "yarn run --silent watdo",
+        "wat": "yarn run --silent watdo",
         "what": "yarn run --silent watdo",
         "prepare": "husky"
     },
