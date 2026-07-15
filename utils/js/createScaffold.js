@@ -3,7 +3,7 @@
 const scaffoldCurrentDirectory = require('./scaffoldCurrentDirectory')
 
 const exampleCommandWithPlaceholders = 'yarn new <year> <day> [optional extra words for directory name]'
-const exampleCommand = '`yarn new 2017 01 find shortest path`'
+const exampleCommand = '`yarn new 2017 1 find shortest path`'
 const outputFiles = [
     '2017/01-find-shortest-path/01-solution.js',
     '2017/01-find-shortest-path/01-test.js',
@@ -12,6 +12,7 @@ const outputFiles = [
     '2017/01-find-shortest-path/example.txt',
     '2017/01-find-shortest-path/input.txt',
 ]
+const exampleSandboxCommand = '`yarn new sandbox 14 find best stock sale`'
 
 /**
  * createScaffold is the target of the `yarn new` script. It parses the CLI args, and
@@ -29,20 +30,32 @@ function createScaffold() {
             console.log(`    * ${o}`)
         })
         console.log('\n')
+        console.log('If you just want a sandbox, you can use sandbox instead of year:')
+        console.log(`eg, ${exampleSandboxCommand}`)
+        console.log('\n')
         return
     }
 
     let aocYear = args[0]
     let aocDay = args[1]
-    let aocDayDir = `${aocDay}`
 
-    validateNumberRange(aocYear, 'year', 2015, 2100)
-    validateNumberRange(aocDay, 'day', 1, 25)
+    if (aocYear == 'sandbox') {
+        validateNumberRange(aocDay, 'sandbox #', 1, 999)
+        if (aocDay.length < 2) {
+            aocDay = `00${aocDay}` // convert 4 to 004
+        } else if (aocDay.length < 3) {
+            aocDay = `0${aocDay}` // convert 14 to 014
+        }
+    } else {
+        validateNumberRange(aocYear, 'year', 2015, 2100)
+        validateNumberRange(aocDay, 'day', 1, 25)
 
-    if (aocDay.length < 2) {
-        aocDay = `0${aocDay}`
+        if (aocDay.length < 2) {
+            aocDay = `0${aocDay}`
+        }
     }
 
+    let aocDayDir = `${aocDay}`
     args = args.slice(2)
     if (args.length > 0) {
         args = args.map(a => {
