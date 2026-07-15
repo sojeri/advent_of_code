@@ -2,7 +2,7 @@ const assert = require('assert')
 const { filterSims, Age, Occult } = require('./file-v1')
 const { betterFilterSims } = require('./file-v2')
 
-describe.only('simple search sims tests', () => {
+describe('simple search sims tests', () => {
     describe('filter fn -- written during interview', () => {
         it('should return Alice Johnson for age TEEN', () => {
             assert.deepEqual(filterSims(`age=${Age.TEEN}`), [

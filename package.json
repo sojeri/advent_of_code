@@ -12,6 +12,7 @@
     },
     "overrides": {
         "mocha": {
+            "js-yaml": "^4.2.0",
             "serialize-javascript": "^7.0.5"
         }
     },
