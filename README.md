@@ -13,12 +13,18 @@ jump links
 
 to a couple of my favorites:
 
--   2018 day 4 ( 53d693a7a51466daf8162f88b2898dbcb706048f ).
--   [2021 day 4](./2021/04-giant-squid)
+- 2018 day 4 ( 53d693a7a51466daf8162f88b2898dbcb706048f ).
+- [2021 day 4](./2021/04-giant-squid)
 
 ## scripts
 
-### `yarn new <year> <day>` will scaffold the solution for year/day
+NOTE: if you don't have yarn installed, you can replace `yarn` below with `npm run`, eg `npm run new 2028 1 some description here`
+
+### `yarn new <year> <day>` will scaffold the solution for year/day (day 1-25 only)
+
+you may need to run `yarn fixNew` to give the script permissions.
+
+### `yarn new sandbox <number>` will scaffold a sandbox the given number (1-999 only)
 
 you may need to run `yarn fixNew` to give the script permissions.
 

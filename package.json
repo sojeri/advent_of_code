@@ -10,8 +10,10 @@
         "pretty-quick": "^4.0.0",
         "sinon": "^21.0.0"
     },
-    "resolutions": {
-        "serialize-javascript": "^7.0.3"
+    "overrides": {
+        "mocha": {
+            "serialize-javascript": "^7.0.5"
+        }
     },
     "scripts": {
         "fixNew": "chmod -x ./utils/js/createScaffold.js",
