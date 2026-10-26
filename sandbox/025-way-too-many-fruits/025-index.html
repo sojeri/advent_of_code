@@ -1,0 +1,306 @@
+<!--
+  Note: this page is a React playground but it's not suitable for production.
+  It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+-->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <title>sandbox #25: react-based way too many fruits selection UX</title>
+        <style type="text/css">
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            li {
+                list-style: none;
+            }
+            .SelectedColors {
+                padding: 1rem;
+                position: sticky;
+                top: 0;
+                background-color: #fff;
+                z-index: 10;
+                max-height: 4rem;
+                overflow-y: scroll;
+            }
+            .SelectedColors__Header {
+                text-align: center;
+                align-self: center;
+                min-width: 4rem;
+            }
+            .SelectedColors,
+            .SelectedColors__List {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .SelectedColors {
+                flex-flow: row nowrap;
+            }
+            .SelectedColors__List {
+                flex-flow: row wrap;
+            }
+            .SelectedColors__List__item::after {
+                content: ',';
+            }
+            .SelectedColors__List__item:last-of-type::after {
+                content: '';
+            }
+
+            .List {
+                margin: 16px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-auto-rows: 60px;
+                grid-gap: 16px;
+            }
+
+            .List__item {
+                line-height: 60px;
+                text-align: center;
+                color: white;
+                text-shadow:
+                    -2px -2px 4px #000,
+                    2px 2px 4px #000;
+                box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+                opacity: 0.8;
+                box-sizing: border-box;
+                border: 2px dotted transparent;
+            }
+
+            .List__item--selected {
+                opacity: 1;
+                border: 2px dotted #fff;
+            }
+
+            /* Taken from https://clrs.cc/ */
+
+            .List__item--navy {
+                background-color: #001f3f;
+            }
+
+            .List__item--blue {
+                background-color: #0074d9;
+            }
+
+            .List__item--aqua {
+                background-color: #7fdbff;
+            }
+
+            .List__item--teal {
+                background-color: #39cccc;
+            }
+
+            .List__item--olive {
+                background-color: #3d9970;
+            }
+
+            .List__item--green {
+                background-color: #2ecc40;
+            }
+
+            .List__item--lime {
+                background-color: #01ff70;
+            }
+
+            .List__item--yellow {
+                background-color: #ffdc00;
+            }
+
+            .List__item--orange {
+                background-color: #ff851b;
+            }
+
+            .List__item--red {
+                background-color: #ff4136;
+            }
+
+            .List__item--maroon {
+                background-color: #85144b;
+            }
+
+            .List__item--fuchsia {
+                background-color: #f012be;
+            }
+
+            .List__item--purple {
+                background-color: #b10dc9;
+            }
+
+            .List__item--black {
+                background-color: #111111;
+            }
+
+            .List__item--gray {
+                background-color: #aaaaaa;
+            }
+
+            .List__item--silver {
+                background-color: #dddddd;
+            }
+        </style>
+        <script type="text/babel">
+            const { Fragment, useState, useMemo, useCallback } = React
+
+            // Implement a feature to allow item selection with the following requirements:
+            // 1. Clicking an item selects/unselects it.
+            // 2. Multiple items can be selected at a time.
+            // 3. Make sure to avoid unnecessary re-renders of each list item in the big list (performance).
+            // 4. Currently selected items should be visually highlighted.
+            // 5. Currently selected items' names should be shown at the top of the page.
+            //
+            // Feel free to change the component structure at will.
+
+            const ListItem = ({ name, color, onSelectCb }) => {
+                const [isSelected, setIsSelected] = useState(false)
+                const handleClick = () => {
+                    setIsSelected(!isSelected)
+                    onSelectCb(name)
+                }
+
+                const classNames = useMemo(() => {
+                    return isSelected
+                        ? `List__item List__item--${color} List__item--selected`
+                        : `List__item List__item--${color}`
+                }, [color, isSelected])
+
+                return (
+                    <li className={classNames} onClick={handleClick} aria-checked={isSelected}>
+                        {name}
+                    </li>
+                )
+            }
+
+            const List = ({ items }) => {
+                const [selectedItems, setSelectedItems] = useState([])
+                const hasNoSelectedItems = selectedItems.length === 0
+
+                const updateSelected = useCallback(current => {
+                    const previous = [...selectedItems]
+                    const index = previous.indexOf(current)
+                    if (index === -1) {
+                        return setSelectedItems([...previous, current])
+                    }
+
+                    const befores = previous.splice(0, index)
+                    // splice(1) because befores splice removed first part of array
+                    const afters = previous.splice(1)
+                    return setSelectedItems([...befores, ...afters])
+                })
+
+                return (
+                    <Fragment>
+                        <section id="selected-colors" className="SelectedColors" role="region" aria-live="polite">
+                            <h3 className="SelectedColors__Header">Selected colors:</h3>
+                            <ul role="menuitemcheckbox" className="SelectedColors__List">
+                                {selectedItems.map(item => (
+                                    <li className="SelectedColors__List__item" key={item}>
+                                        {item}
+                                    </li>
+                                ))}
+                                {hasNoSelectedItems && <li>None</li>}
+                            </ul>
+                        </section>
+                        <section id="color-picker" aria-controls="selected-colors">
+                            <ul className="List">
+                                {items.map(item => (
+                                    <ListItem
+                                        key={item.name}
+                                        name={item.name}
+                                        color={item.color}
+                                        onSelectCb={updateSelected}
+                                    />
+                                ))}
+                            </ul>
+                        </section>
+                    </Fragment>
+                )
+            }
+
+            // ---------------------------------------
+            // Do NOT change anything below this line.
+            // const fruits = ['🍎','🍌','🍉','🟠','🍑','🍊','🍐','🥝','🥭','🍍'];
+            // ---------------------------------------
+
+            const sizes = ['tiny', 'small', 'medium', 'large', 'huge']
+            const colors = [
+                'navy',
+                'blue',
+                'aqua',
+                'teal',
+                'olive',
+                'green',
+                'lime',
+                'yellow',
+                'orange',
+                'red',
+                'maroon',
+                'fuchsia',
+                'purple',
+                'silver',
+                'gray',
+                'black',
+            ]
+            const fruits = [
+                'apple',
+                'banana',
+                'watermelon',
+                'orange',
+                'peach',
+                'tangerine',
+                'pear',
+                'kiwi',
+                'mango',
+                'pineapple',
+            ]
+
+            const items = sizes.reduce(
+                (items, size) => [
+                    ...items,
+                    ...fruits.reduce(
+                        (acc, fruit) => [
+                            ...acc,
+                            ...colors.reduce(
+                                (acc, color) => [
+                                    ...acc,
+                                    {
+                                        name: `${size} ${color} ${fruit}`,
+                                        color,
+                                    },
+                                ],
+                                []
+                            ),
+                        ],
+                        []
+                    ),
+                ],
+                []
+            )
+
+            const root = ReactDOM.createRoot(document.getElementById('root'))
+            root.render(<List items={items} />)
+        </script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <noscript>
+            <h1>JavaScript required</h1>
+            <p>Sorry, this was a react-based interview prompt. Please enable JavaScript.</p>
+        </noscript>
+    </body>
+</html>
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>

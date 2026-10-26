@@ -7,7 +7,12 @@ const fs = require('fs')
  * @param {*} sanitizeInput whether to sanitize input (return array[0] if array size is 1)
  */
 function runCallbackAgainstFileAsArray(callback, fileName = 'input.txt', sanitizeInput = false) {
-    let fileContents = fs.readFileSync(fileName)
+    let fileContents
+    try {
+        fileContents = fs.readFileSync(fileName)
+    } catch {
+        fileContents = fs.readFileSync(`advent_of_code/${fileName}`)
+    }
     if (fileContents.indexOf('\r') > -1) {
         fileContents = fileContents.toString().split('\r\n')
     } else {

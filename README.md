@@ -1,26 +1,23 @@
-# advent of code
+# misc code puzzle solutions
 
-<!--
-jump links
-- shout outs
-- helpingful commands
-    - running tests
-    - scaffolding new day
-    - grabbing notes from code
--->
+a place for me to stash random code puzzle solutions, like:
+
+- advent of code | [https://adventofcode.com](https://adventofcode.com)
+- everybody codes | [https://everybody.codes](https://everybody.codes)
+- project euler | [https://projecteuler.net](https://projecteuler.net)
 
 ## shout out
 
-to a couple of my favorites:
+to a couple of my advent of code favorites:
 
 - 2018 day 4 ( 53d693a7a51466daf8162f88b2898dbcb706048f ).
-- [2021 day 4](./2021/04-giant-squid)
+- [2021 day 4](./advent_of_code//2021/04-giant-squid)
 
 ## scripts
 
-NOTE: if you don't have yarn installed, you can replace `yarn` below with `npm run`, eg `npm run new 2028 1 some description here`
+NOTE: if you don't have yarn installed, you can replace `yarn` below with `npm run`, eg `npm run new aoc 2028 1 some description here`
 
-### `yarn new <year> <day>` will scaffold the solution for year/day (day 1-25 only)
+### `yarn new aoc <year> <day>` will scaffold the solution for year/day (day 1-25 only)
 
 you may need to run `yarn fixNew` to give the script permissions.
 

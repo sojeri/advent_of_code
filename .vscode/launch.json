@@ -11,7 +11,11 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/{,!(node_modules)/**!(templates)}/*test.js"
+                "**/*test.js",
+                "--ignore",
+                "node_modules/**",
+                "--ignore",
+                "**/templates/**"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         }

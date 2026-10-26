@@ -30,12 +30,18 @@ function getTemplatePath() {
 
 const dayMarker = '@@'
 const importMarker = '%%'
+const longUtilsImportMarker = '../../../'
+const shortUtilsImportMaker = '../../'
 const importIntcode =
     "const { addInput, getIntcodeComputer, loadProgram, runProgram, PAUSE_EXECUTION_MARKER, PROCESS_TERMINATED_MARKER, } = require('../intcode-computer')"
 const importFileMarker = '##'
-function updateContent(buffer, name, is2019, dirName) {
+function updateContent(buffer, name, is2019, dirName, isSandbox) {
     let content = buffer.toString()
     content = content.split(importMarker).join(is2019 ? importIntcode : '')
+    if (isSandbox) {
+        // sandbox doesn't have year dir to traverse through when importing utils
+        content = content.split(longUtilsImportMarker).join(shortUtilsImportMaker)
+    }
     return content.split(dayMarker).join(name).split(importFileMarker).join(dirName)
 }
 
@@ -52,9 +58,13 @@ const templateVariants = ['-1-', '-2-']
  * @param {*} param0 an unnamed object representing the desired path and file
  * prefixes, eg { aocYear: '2020', aocDayDir: '11-example', aocDay: '11' }
  */
-function scaffoldCurrentDirectory({ aocYear, aocDayDir, aocDay }) {
-    createOutputPath([aocYear, aocDayDir])
-    const pathPrefix = `${aocYear}/${aocDayDir}/`
+function scaffoldCurrentDirectory({ wat, aocYear, aocDayDir, aocDay }) {
+    let filePathParts = [wat, aocYear, aocDayDir]
+    if (wat == 'sandbox') {
+        filePathParts = [wat, aocDayDir]
+    }
+    createOutputPath(filePathParts)
+    const pathPrefix = `${filePathParts.join('/')}/`
 
     templateFiles.forEach(fileName => {
         let writeFileNames = templateVariants.map(v => pathPrefix + aocDay + v + fileName)
@@ -69,7 +79,9 @@ function scaffoldCurrentDirectory({ aocYear, aocDayDir, aocDay }) {
         readStream.on('data', chunk => {
             writeStreams.forEach((ws, i) => {
                 let projectName = aocDay + templateVariants[i]
-                ws.write(updateContent(chunk, projectName, aocYear == '2019', `${aocYear}/${aocDayDir}`))
+                ws.write(
+                    updateContent(chunk, projectName, aocYear == '2019', filePathParts.join('/'), wat == 'sandbox')
+                )
             })
         })
 
