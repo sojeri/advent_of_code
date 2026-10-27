@@ -14,7 +14,7 @@
         "fixNew": "chmod -x ./utils/js/createScaffold.js",
         "new": "./utils/js/createScaffold.js",
         "notes": "notes",
-        "pretty": "prettier --write '{advent_of_code/**,everybody_codes/20**,sandbox,utils}/{,**/}*.js'",
+        "pretty": "prettier --write '{**/20**,project_euler,sandbox,utils}/{,**/}*.js'",
         "test": "mocha '**/*test.js' --ignore 'node_modules/**' --ignore '**/templates/**'",
         "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; yarn new",
         "help": "yarn run --silent watdo",

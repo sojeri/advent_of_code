@@ -2,36 +2,41 @@
 
 const scaffoldCurrentDirectory = require('./scaffoldCurrentDirectory')
 
-const exampleCommandWithPlaceholders = 'yarn new <wat> <year> <day> [optional extra words for directory name]'
-const exampleCommandAoc = '`yarn new advent 2017 1 find shortest path`'
+const exampleCommandWithPlaceholders =
+    'yarn new [advent/everybody/project/sandbox] <year> <day> [optional extra words for directory name]'
+const exampleCommandAoc = '`yarn new advent 2017 20 find shortest path`'
 const outputFilesAoc = [
-    'advent_of_code/2017/01-find-shortest-path/01-solution.js',
-    'advent_of_code/2017/01-find-shortest-path/01-test.js',
-    'advent_of_code/2017/01-find-shortest-path/02-solution.js',
-    'advent_of_code/2017/01-find-shortest-path/02-test.js',
-    'advent_of_code/2017/01-find-shortest-path/example.txt',
-    'advent_of_code/2017/01-find-shortest-path/input.txt',
+    'advent_of_code/2017/20-find-shortest-path/20-1-solution.js',
+    'advent_of_code/2017/20-find-shortest-path/20-1-test.js',
+    'advent_of_code/2017/20-find-shortest-path/20-2-solution.js',
+    'advent_of_code/2017/20-find-shortest-path/20-2-test.js',
+    'advent_of_code/2017/20-find-shortest-path/example.txt',
+    'advent_of_code/2017/20-find-shortest-path/input.txt',
 ]
 const exampleCommandEbc = '`yarn new everybody 2024 1 battle for farmlands`'
 const outputFilesEbc = [
-    'everybody_codes/2024/01-battle-for-farmlands/01-solution.js',
-    'everybody_codes/2024/01-battle-for-farmlands/01-test.js',
-    'everybody_codes/2024/01-battle-for-farmlands/02-solution.js',
-    'everybody_codes/2024/01-battle-for-farmlands/02-test.js',
-    'everybody_codes/2024/01-battle-for-farmlands/example.txt',
-    'everybody_codes/2024/01-battle-for-farmlands/input.txt',
+    '(similar to AoC files, plus the below)',
+    'everybody_codes/2024/01-battle-for-farmlands/01-3-solution.js',
+    'everybody_codes/2024/01-battle-for-farmlands/01-3-test.js',
 ]
 const exampleSandboxCommand = '`yarn new sandbox 14 find best stock sale`'
+const exampleEulerCommand = '`yarn new project-euler 5 smallest multiple`'
 
 /**
  * converts CLI arg to folder name.
  * defaults to original repo scaffold behavior -- advent of code.
  */
 function sanitizeWat(watArg) {
-    console.error(watArg)
-    if (watArg[0] == 's') return 'sandbox'
-    if (watArg[0] == 'e') return 'everybody_codes'
-    return 'advent_of_code'
+    if (watArg[0] == 's') return { wat: 'sandbox', puzzleParts: 1 }
+    if (watArg[0] == 'e') return { wat: 'everybody_codes', puzzleParts: 3 }
+    if (watArg[0] == 'p') return { wat: 'project_euler', puzzleParts: 1 }
+    return { wat: 'advent_of_code', puzzleParts: 2 }
+}
+
+/** flag for special handling for puzzles that aren't on a year-based release schedule */
+function isNoYearWat(watArg) {
+    if (typeof watArg !== 'string') return false
+    return watArg[0] == 's' || watArg[0] == 'p'
 }
 
 /**
@@ -42,8 +47,8 @@ function sanitizeWat(watArg) {
  */
 function createScaffold() {
     let args = process.argv.slice(2)
-    const isSandbox = typeof args[0] == 'string' && args[0][0] == 's'
-    const size = isSandbox ? 2 : 3 // sandbox doesn't require year
+    const hasntYear = isNoYearWat(args[0])
+    const size = hasntYear ? 2 : 3
     if (args.length < size || args[size - 1] === undefined) {
         console.log('You can use this command to scaffold a new directory:\n')
         console.log(`    ${exampleCommandWithPlaceholders}\n`)
@@ -51,28 +56,25 @@ function createScaffold() {
         outputFilesAoc.forEach(o => {
             console.log(`    * ${o}`)
         })
-        console.log('\n')
+        console.log()
         console.log(`eg, ${exampleCommandEbc} would scaffold the following files:\n`)
         outputFilesEbc.forEach(o => {
             console.log(`    * ${o}`)
         })
-        console.log('\n')
-        console.log('If you just want a sandbox, you can use sandbox:')
-        console.log(`eg, ${exampleSandboxCommand}`)
-        console.log('\n')
-        console.log('Current wat logic is based on first character, so you can just use a/e/s if you prefer.')
-        console.log('\n')
+        console.log()
+        console.log('If you want a project euler or sandbox directory:\n')
+        console.log(`eg, ${exampleSandboxCommand}\n`)
+        console.log(`OR ${exampleEulerCommand}\n`)
+        console.log('Current wat logic is based on first character, so you can just use a/e/p/s if you prefer.\n')
         return
     }
 
-    let wat = sanitizeWat(args[0])
+    const { wat, puzzleParts } = sanitizeWat(args[0])
     let aocYear = args[1]
     let aocDay = args[2]
-    let wordsStartAt = 3
-    if (wat === 'sandbox') {
+    if (hasntYear) {
         aocDay = aocYear
-        wordsStartAt = 2
-        validateNumberRange(aocDay, 'sandbox #', 1, 999)
+        validateNumberRange(aocDay, `${wat} #`, 1, 999)
         if (aocDay.length < 2) {
             aocDay = `00${aocDay}` // convert 4 to 004
         } else if (aocDay.length < 3) {
@@ -88,7 +90,7 @@ function createScaffold() {
     }
 
     let aocDayDir = `${aocDay}`
-    args = args.slice(wordsStartAt)
+    args = args.slice(size)
     if (args.length > 0) {
         args = args.map(a => {
             return getSupportedCharsFromWord(a)
@@ -97,7 +99,7 @@ function createScaffold() {
         aocDayDir += args.join('-')
     }
 
-    scaffoldCurrentDirectory({ wat, aocYear, aocDayDir, aocDay })
+    scaffoldCurrentDirectory({ wat, aocYear, aocDayDir, aocDay, hasntYear, puzzleParts })
 }
 
 /**

@@ -35,18 +35,17 @@ const shortUtilsImportMaker = '../../'
 const importIntcode =
     "const { addInput, getIntcodeComputer, loadProgram, runProgram, PAUSE_EXECUTION_MARKER, PROCESS_TERMINATED_MARKER, } = require('../intcode-computer')"
 const importFileMarker = '##'
-function updateContent(buffer, name, is2019, dirName, isSandbox) {
+function updateContent(buffer, name, is2019, dirName, hasntYear) {
     let content = buffer.toString()
     content = content.split(importMarker).join(is2019 ? importIntcode : '')
-    if (isSandbox) {
-        // sandbox doesn't have year dir to traverse through when importing utils
+    if (hasntYear) {
+        // puzzles that aren't year-based have one less dir to traverse through when importing utils
         content = content.split(longUtilsImportMarker).join(shortUtilsImportMaker)
     }
     return content.split(dayMarker).join(name).split(importFileMarker).join(dirName)
 }
 
 const templateFiles = ['solution.js', 'test.js']
-const templateVariants = ['-1-', '-2-']
 
 // TODO: better error handling
 // TODO: this should have tests to expose what it does
@@ -58,10 +57,14 @@ const templateVariants = ['-1-', '-2-']
  * @param {*} param0 an unnamed object representing the desired path and file
  * prefixes, eg { aocYear: '2020', aocDayDir: '11-example', aocDay: '11' }
  */
-function scaffoldCurrentDirectory({ wat, aocYear, aocDayDir, aocDay }) {
+function scaffoldCurrentDirectory({ wat, aocYear, aocDayDir, aocDay, hasntYear, puzzleParts }) {
     let filePathParts = [wat, aocYear, aocDayDir]
-    if (wat == 'sandbox') {
+    if (hasntYear) {
         filePathParts = [wat, aocDayDir]
+    }
+    const templateVariants = []
+    for (let i = 1; i <= puzzleParts; i++) {
+        templateVariants.push(`-${i}-`)
     }
     createOutputPath(filePathParts)
     const pathPrefix = `${filePathParts.join('/')}/`
@@ -79,9 +82,7 @@ function scaffoldCurrentDirectory({ wat, aocYear, aocDayDir, aocDay }) {
         readStream.on('data', chunk => {
             writeStreams.forEach((ws, i) => {
                 let projectName = aocDay + templateVariants[i]
-                ws.write(
-                    updateContent(chunk, projectName, aocYear == '2019', filePathParts.join('/'), wat == 'sandbox')
-                )
+                ws.write(updateContent(chunk, projectName, aocYear == '2019', filePathParts.join('/'), hasntYear))
             })
         })
 
