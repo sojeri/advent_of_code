@@ -1,3 +1,8 @@
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+
+const VERBOSE = false
+const logger = getLogger('aoc (2021/4/1) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
+
 const NUMBERS_MATCHER = /\d+/g
 const NUMBER_MAPPER = s => Number(s)
 
@@ -34,9 +39,8 @@ function parse(data) {
  * a class representing a standard 5x5 bingo board
  */
 class Board {
-    constructor(data, debug = false) {
+    constructor(data) {
         const [parsedData, rawBoard, numbers] = parse(data)
-        this.debug = debug
         this.data = parsedData
         this.visual = rawBoard
         this.numbers = numbers
@@ -71,13 +75,13 @@ class Board {
 
     score(initial) {
         let remainingSum = 0
-        if (this.debug) console.log('scoring board that won at', initial)
-        if (this.debug) console.log(this.visual)
+        logger.log('scoring board that won at', initial)
+        logger.log(this.visual)
 
         this.numbers.forEach(num => {
             if (!this.called.includes(num)) {
                 remainingSum += num
-                if (this.debug) console.log(`adding ${num} to sum. now it's ${remainingSum}`)
+                logger.log(`adding ${num} to sum. now it's ${remainingSum}`)
             }
         })
 
@@ -95,7 +99,6 @@ function getBestWinningScore(winners) {
 
 function solution(
     rawInput,
-    debug = false,
     BingoBoard = Board,
     shouldStopPlayingCb = shouldStopPlaying,
     getBestWinningScoreCb = getBestWinningScore
@@ -114,7 +117,7 @@ function solution(
     let winners = []
     for (let step = 0; step < bingoNumbers.length; step++) {
         const currentNumber = bingoNumbers[step]
-        if (debug) console.log('calling', currentNumber)
+        logger.log('calling', currentNumber)
 
         boards.forEach((board, boardIndex) => {
             try {
@@ -132,11 +135,9 @@ function solution(
         if (shouldStopPlayingCb(winners)) break
     }
 
-    if (debug) {
-        winners.forEach(w => {
-            console.log(w)
-        })
-    }
+    winners.forEach(w => {
+        logger.log(w)
+    })
 
     return getBestWinningScoreCb(winners)
 }

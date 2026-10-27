@@ -7,6 +7,11 @@ const {
     PROCESS_TERMINATED_MARKER,
 } = require('../intcode-computer')
 
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+
+const VERBOSE = false
+const logger = getLogger('aoc (2019/11) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
+
 const directions = ['north', 'east', 'south', 'west']
 
 const paintColors = {
@@ -122,7 +127,7 @@ function actuallyPaintPainted() {
 
     // display result
     grid.forEach(r => {
-        console.log(r.join(''))
+        logger.log(r.join(''))
     })
 }
 

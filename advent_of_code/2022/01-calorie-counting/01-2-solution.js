@@ -1,4 +1,8 @@
 let { descendingSort } = require('../../../utils/js/sorts')
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+
+const VERBOSE = false
+const logger = getLogger('aoc (2022/1/2) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
 
 /**
  * https://adventofcode.com/2022/day/1#part2
@@ -20,7 +24,7 @@ function solution(calories) {
     sums.push(current) // handle last set
 
     const sorted = sums.sort(descendingSort)
-    console.log(sums, sorted)
+    logger.log(sums, sorted)
     return sorted[0] + sorted[1] + sorted[2]
 }
 

@@ -1,3 +1,8 @@
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+
+const VERBOSE = false
+const logger = getLogger('aoc (2022/3/1) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
+
 /**
  * https://adventofcode.com/2022/day/3
  * find total bag scores
@@ -28,7 +33,7 @@ function scoreBag(bag) {
     const someContents = getContents(bag.slice(0, size))
     const otherContents = getContents(bag.slice(size))
     const contents = Object.keys(someContents)
-    console.log({ contents, someContents, otherContents })
+    logger.log({ contents, someContents, otherContents })
     for (let i = 0; i < contents.length; i++) {
         const item = contents[i]
         if (otherContents[item]) return scoreItem(item)
@@ -40,7 +45,7 @@ function scoreBag(bag) {
 function scoreItem(item) {
     const code = item.charCodeAt(0) // grabs ASCII value
     const isLower = code > 90 // Z = 90
-    console.log('item', item, 'score', { code }, isLower ? code - 60 : code - 15)
+    logger.log('item', item, 'score', { code }, isLower ? code - 60 : code - 15)
 
     // a = 97, so for 1 subtr 96
     // A = 65, so for 27 subtr 38

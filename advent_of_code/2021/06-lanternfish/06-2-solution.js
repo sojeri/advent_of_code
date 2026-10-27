@@ -1,5 +1,9 @@
 // https://adventofcode.com/2021/day/6#part2
 const { NUMBER_MAPPER } = require('../04-giant-squid/04-1-solution')
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+
+const VERBOSE = false
+const logger = getLogger('aoc (2021/6/2) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
 
 const BASE_KEYS = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
@@ -23,7 +27,7 @@ function hydrateStartingPop(input) {
  * @param {*} duration the # of days to simulate the population over MUST BE A MULTIPLE OF FOUR TO GET ACCURATE DATA
  * @returns
  */
-function simulateLanternfish(startingPop, duration, debug = false) {
+function simulateLanternfish(startingPop, duration) {
     let currentPop = hydrateStartingPop(startingPop)
     let day = 0
     const TOTAL_DISTINCT_FISH_PHASES = 9
@@ -42,15 +46,17 @@ function simulateLanternfish(startingPop, duration, debug = false) {
         })
 
         currentPop = hatchlings
-        if (debug) console.log('finished processing day', day, '\ncurrent pop is', currentPop.join(','))
+        logger.log('finished processing day', day, '\ncurrent pop is', {
+            currentPop: Array.isArray(currentPop) ? currentPop.join(',') : currentPop,
+        })
         day += 4
     }
 
     return currentPop
 }
 
-function solution(startingPop, debug = false) {
-    const lanternfishPop = simulateLanternfish(startingPop[0], 256, debug)
+function solution(startingPop) {
+    const lanternfishPop = simulateLanternfish(startingPop[0], 256)
 
     let finalCount = 0
     BASE_KEYS.forEach(fishValue => {

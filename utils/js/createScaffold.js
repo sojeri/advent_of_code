@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const scaffoldCurrentDirectory = require('./scaffoldCurrentDirectory')
+const { getLogger, VERBOSITY } = require('./getLogger')
 
+const logger = getLogger('utils/new :: ', VERBOSITY.INFO)
 const exampleCommandWithPlaceholders =
     'yarn new [advent/everybody/project/sandbox] <year> <day> [optional extra words for directory name]'
 const exampleCommandAoc = '`yarn new advent 2017 20 find shortest path`'
@@ -50,22 +52,22 @@ function createScaffold() {
     const hasntYear = isNoYearWat(args[0])
     const size = hasntYear ? 2 : 3
     if (args.length < size || args[size - 1] === undefined) {
-        console.log('You can use this command to scaffold a new directory:\n')
-        console.log(`    ${exampleCommandWithPlaceholders}\n`)
-        console.log(`eg, ${exampleCommandAoc} would scaffold the following files:\n`)
+        logger.log('You can use this command to scaffold a new directory:\n')
+        logger.log(`    ${exampleCommandWithPlaceholders}\n`)
+        logger.log(`eg, ${exampleCommandAoc} would scaffold the following files:\n`)
         outputFilesAoc.forEach(o => {
-            console.log(`    * ${o}`)
+            logger.log(`    * ${o}`)
         })
-        console.log()
-        console.log(`eg, ${exampleCommandEbc} would scaffold the following files:\n`)
+        logger.log()
+        logger.log(`eg, ${exampleCommandEbc} would scaffold the following files:\n`)
         outputFilesEbc.forEach(o => {
-            console.log(`    * ${o}`)
+            logger.log(`    * ${o}`)
         })
-        console.log()
-        console.log('If you want a project euler or sandbox directory:\n')
-        console.log(`eg, ${exampleSandboxCommand}\n`)
-        console.log(`OR ${exampleEulerCommand}\n`)
-        console.log('Current wat logic is based on first character, so you can just use a/e/p/s if you prefer.\n')
+        logger.log()
+        logger.log('If you want a project euler or sandbox directory:\n')
+        logger.log(`eg, ${exampleSandboxCommand}\n`)
+        logger.log(`OR ${exampleEulerCommand}\n`)
+        logger.log('Current wat logic is based on first character, so you can just use a/e/p/s if you prefer.\n')
         return
     }
 

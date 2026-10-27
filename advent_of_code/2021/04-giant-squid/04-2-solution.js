@@ -1,6 +1,5 @@
 const { solution, Board } = require('./04-1-solution')
-
-const DEBUG = false
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
 
 /**
  * a class representing a standard 5x5 bingo board,
@@ -40,7 +39,7 @@ function getBestWinningScore(winners) {
 }
 
 function solutionV2(rawInput) {
-    return solution(rawInput, DEBUG, StopAfterWinningBoard, shouldStopPlaying, getBestWinningScore)
+    return solution(rawInput, StopAfterWinningBoard, shouldStopPlaying, getBestWinningScore)
 }
 
 module.exports = { solutionV2, StopAfterWinningBoard }

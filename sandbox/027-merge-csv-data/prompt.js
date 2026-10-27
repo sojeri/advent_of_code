@@ -20,6 +20,10 @@ Sample output
 ]
 */
 
+// next two lines added after the fact
+const { getLogger, VERBOSITY } = require('../../utils/js/getLogger')
+const logger = getLogger('sandbox (27) :: ')
+
 // import with fs.readfilesync
 // combine data as outlined above
 const fs = require('fs')
@@ -35,7 +39,7 @@ function getCsvData(fileName) {
     rows.forEach((row, rowIndex) => {
         const rowValues = row.split(',')
         if (rowValues.length < headerKeys.length) {
-            console.warn('found short line at row', rowIndex, 'in file', fileName)
+            logger.warn('found short line at row', rowIndex, 'in file', fileName)
             return
         }
         const rowOutput = {}

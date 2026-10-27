@@ -4,6 +4,9 @@ const NULL_WORKER_ID = 'NULL_WORKER'
 const VERBOSE = false
 const LOOP_PROTECTION = false
 const MAX_L00PS = 150
+const { getLogger, VERBOSITY } = require('../../utils/js/getLogger')
+
+const logger = getLogger('sandbox (24) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
 
 // #region helper methods
 
@@ -36,7 +39,7 @@ function getRemainingCapacity() {
         const worker = getWorker(workerId)
         capacity += worker.capacity
     })
-    if (VERBOSE) console.log('capacity calculated:', capacity)
+    logger('capacity calculated:', capacity)
     return capacity
 }
 
@@ -50,7 +53,7 @@ function shouldContinueLoop() {
     if (!LOOP_PROTECTION) return true
 
     l00ps++
-    if (VERBOSE) console.log('loops ticking', l00ps)
+    logger('loops ticking', l00ps)
     return l00ps < MAX_L00PS
 }
 
@@ -139,10 +142,10 @@ function setLimit(workerId, newLimit) {
  *   eg, `[a, b, a, b, a, b, c]`
  */
 function assign(jobIds, useStrictSort = false) {
-    if (VERBOSE) console.log('attempting to assign', jobIds)
+    logger.log('attempting to assign', jobIds)
     const capacity = getRemainingCapacity()
     if (capacity < jobIds.length) {
-        if (VERBOSE) console.log('insufficient capacity')
+        logger.log('insufficient capacity')
         return null
     }
     const workers = Object.keys(WORKERS).sort((a, b) => {
@@ -169,7 +172,7 @@ function assign(jobIds, useStrictSort = false) {
         }
         const currLimit = Math.min(currSize, workerOne.limit)
         if (workerOne.jobs.length < currLimit) {
-            if (VERBOSE) console.log('saving jobId', jobId, 'to worker', workerOne.id)
+            logger.log('saving jobId', jobId, 'to worker', workerOne.id)
             output.push(workerOne.id)
             workerOne.jobs.push(jobId)
             workerOne.capacity = workerOne.limit - workerOne.jobs.length
@@ -180,7 +183,7 @@ function assign(jobIds, useStrictSort = false) {
 
         first += 1
         if (first >= workers.length) {
-            if (VERBOSE) console.log('reached end of list, looping back to beginning')
+            logger.log('reached end of list, looping back to beginning')
             lastLoopSize = currSize
             currSize = -1
             first = 0
@@ -188,7 +191,7 @@ function assign(jobIds, useStrictSort = false) {
             continue
         }
     }
-    if (VERBOSE) console.log({ output })
+    logger.log({ output })
     return output
 }
 
@@ -208,7 +211,7 @@ function runTests() {
     if (firstResult !== null) {
         throw new Error('16 CIDs should be over capacity')
     } else {
-        console.log('test case 1 (assign over capacity behavior) passed')
+        logger.warn('test case 1 (assign over capacity behavior) passed')
     }
 
     // this should succeed, it's below total
@@ -248,14 +251,14 @@ function runTests() {
             throw new Error(`assignment should have been a,b,c,d,e,a,b,c,e,a,c,e,c. mismatch detected at index ${i}`)
         }
     })
-    console.log('test case 2 (assign within capacity behavior) passed')
+    console.warn('test case 2 (assign within capacity behavior) passed')
 
     // capacity used: 13/15, remainder should be 2
     const capacity = getRemainingCapacity()
     if (capacity !== 2) {
         throw new Error(`capacity should be 2 (13/15 used), got ${capacity} instead`)
     } else {
-        console.log('test case 3 (capacity after successful assign in test case 2) passed')
+        console.warn('test case 3 (capacity after successful assign in test case 2) passed')
     }
 
     // capacity used: 13/15, dropping 4 -> 1 should fail
@@ -263,7 +266,7 @@ function runTests() {
     if (limitResult) {
         throw new Error('setLimit e:1 should have failed to reassign capacity')
     } else {
-        console.log('test case 4 (setLimit beyond capacity behavior 1) passed')
+        console.warn('test case 4 (setLimit beyond capacity behavior 1) passed')
     }
 
     // capacity used before: 13/15, dropping 3 -> 2 should succeed
@@ -271,7 +274,7 @@ function runTests() {
     if (!secondLimitResult) {
         throw new Error('setLimit a:2 should have successfully reassigned used capacity')
     } else {
-        console.log('test case 5 (setLimit within capacity with reassign) passed')
+        console.warn('test case 5 (setLimit within capacity with reassign) passed')
     }
 
     // new capacity should be 13/14, 1 left
@@ -279,7 +282,7 @@ function runTests() {
     if (secondLimitCapacity !== 1) {
         throw new Error('remaining capacity after prev test case should be 1')
     } else {
-        console.log('test case 5.5 (capacity after prev test case) passed')
+        console.warn('test case 5.5 (capacity after prev test case) passed')
     }
 
     // capacity used before: 13/14, bumping 2 -> 10 should succeed
@@ -287,7 +290,7 @@ function runTests() {
     if (!thirdLimitResult) {
         throw new Error('setLimit a:10 should have successfully updated limit')
     } else {
-        console.log('test case 6 (setLimit + within capacity without assign) passed')
+        console.warn('test case 6 (setLimit + within capacity without assign) passed')
     }
 
     // new capacity should be 13/22, 9 left
@@ -295,7 +298,7 @@ function runTests() {
     if (thirdLimitCapacity !== 9) {
         throw new Error('remaining capacity after prev test case should be 9')
     } else {
-        console.log('test case 6.5 (capacity after prev test case) passed')
+        console.warn('test case 6.5 (capacity after prev test case) passed')
     }
 
     // capacity used before: 13/22, dropping 10 -> 4 should succeed
@@ -303,7 +306,7 @@ function runTests() {
     if (!fourthLimitResult) {
         throw new Error('setLimit a:4 should have successfully updated limit')
     } else {
-        console.log('test case 7 (setLimit - within capacity without assign) passed')
+        logger.warn('test case 7 (setLimit - within capacity without assign) passed')
     }
 
     // capacity used: 13/16, remainder should be 3
@@ -311,7 +314,7 @@ function runTests() {
     if (penultimateCapacity !== 3) {
         throw new Error('capacity should be 3 (13/16 used)')
     } else {
-        console.log('test case 8 (capacity after setLimit in test case 7) passed')
+        logger.warn('test case 8 (capacity after setLimit in test case 7) passed')
     }
 
     // capacity is now 13/16
@@ -322,7 +325,7 @@ function runTests() {
             throw new Error(`assignment should have been a,a,c. mismatch detected at index ${i}`)
         }
     })
-    console.log('test case 9 (final assign set) passed')
+    logger.warn('test case 9 (final assign set) passed')
 }
 
 runTests()

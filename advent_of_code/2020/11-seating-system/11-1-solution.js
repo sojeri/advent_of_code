@@ -1,8 +1,20 @@
 const { cloneDeep, clone } = require('lodash')
 
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+
+const VERBOSE = false
+const logger = getLogger('aoc (2020/11) :: ', VERBOSE ? VERBOSITY.DEBUG : VERBOSITY.WARN)
+
 const EMPTY = 'L'
 const OCCUPIED = '#'
 const FLOOR = '.'
+
+function log(matrix, roundMarker) {
+    logger.log('\n\n\nround', roundMarker, '\n')
+    matrix.forEach(row => {
+        logger.log(row.join(''))
+    })
+}
 
 /**
  *
@@ -87,13 +99,6 @@ function processRound(initialArr, initialAdjMtx, initialOccupiedCount = 0) {
     }
 
     return { nextArr, nextAdjMtx, occupiedCount, hasAnythingChanged }
-}
-
-function log(matrix, roundMarker) {
-    console.log('\n\n\nround', roundMarker, '\n')
-    matrix.forEach(row => {
-        console.log(row.join(''))
-    })
 }
 
 function solution(inputArray) {

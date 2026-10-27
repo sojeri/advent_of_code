@@ -1,4 +1,6 @@
 let { ascendingSort } = require('../../../utils/js/sorts')
+const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+const logger = getLogger('aoc (2020/10) :: ')
 
 function solution(inputArray) {
     const theNumbers = inputArray.map(s => Number(s))
@@ -14,7 +16,7 @@ function solution(inputArray) {
         } else if (prev + 3 === current) {
             threes++
         } else {
-            console.log(prev, current, i, theNumbers)
+            logger.error(prev, current, i, theNumbers)
             throw new Error('invalid adapter coonfiguration')
         }
 

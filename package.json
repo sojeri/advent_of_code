@@ -15,6 +15,7 @@
         "new": "./utils/js/createScaffold.js",
         "notes": "notes",
         "pretty": "prettier --write '{**/20**,project_euler,sandbox,utils}/{,**/}*.js'",
+        "nyan": "mocha '**/*test.js' --reporter nyan --ignore 'node_modules/**' --ignore '**/templates/**'",
         "test": "mocha '**/*test.js' --ignore 'node_modules/**' --ignore '**/templates/**'",
         "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; yarn new",
         "help": "yarn run --silent watdo",
