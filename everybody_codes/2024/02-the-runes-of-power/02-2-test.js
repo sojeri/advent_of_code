@@ -2,7 +2,7 @@ const assert = require('assert')
 const runCallbackAgainstFile = require('../../../utils/js/runCbAgainstFileAsArray')
 const { solution } = require('./02-2-solution')
 
-describe.only('02-2-solution', () => {
+describe('02-2-solution', () => {
     describe('solution', () => {
         // it('should return -1 for example input', () => {
         //     assert.strictEqual(solution(), -1)
