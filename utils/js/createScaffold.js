@@ -23,6 +23,7 @@ const outputFilesEbc = [
 ]
 const exampleSandboxCommand = '`yarn new sandbox 14 find best stock sale`'
 const exampleEulerCommand = '`yarn new project-euler 5 smallest multiple`'
+const exampleLeetcodeCommand = '`yarn new leetcode 3 longest substring without repeating characters`'
 
 /**
  * converts CLI arg to folder name.
@@ -30,15 +31,17 @@ const exampleEulerCommand = '`yarn new project-euler 5 smallest multiple`'
  */
 function sanitizeWat(watArg) {
     if (watArg[0] == 's') return { wat: 'sandbox', puzzleParts: 1 }
-    if (watArg[0] == 'e') return { wat: 'everybody_codes', puzzleParts: 3 }
     if (watArg[0] == 'p') return { wat: 'project_euler', puzzleParts: 1 }
+    if (watArg[0] == 'e') return { wat: 'everybody_codes', puzzleParts: 3 }
+    if (watArg[0] == 'l') return { wat: 'leetcode', puzzleParts: 1 }
     return { wat: 'advent_of_code', puzzleParts: 2 }
 }
 
 /** flag for special handling for puzzles that aren't on a year-based release schedule */
 function isNoYearWat(watArg) {
     if (typeof watArg !== 'string') return false
-    return watArg[0] == 's' || watArg[0] == 'p'
+    const marker = watArg[0]
+    return marker == 's' || marker == 'p' || marker == 'l'
 }
 
 /**
@@ -68,8 +71,9 @@ function createScaffold() {
             logger.log(`    * ${o}`)
         })
         logger.log()
-        logger.log('If you want a project euler or sandbox directory:\n')
+        logger.log('If you want a project euler, leetcode, or sandbox directory:\n')
         logger.log(`eg, ${exampleSandboxCommand}\n`)
+        logger.log(`OR ${exampleLeetcodeCommand}\n`)
         logger.log(`OR ${exampleEulerCommand}\n`)
         logger.log('Current wat logic is based on first character, so you can just use a/e/p/s if you prefer.\n')
         return
@@ -80,10 +84,8 @@ function createScaffold() {
     let aocDay = args[2]
     if (hasntYear) {
         aocDay = aocYear
-        validateNumberRange(aocDay, `${wat} #`, 1, 999)
-        if (aocDay.length < 2) {
-            aocDay = `00${aocDay}` // convert 4 to 004
-        } else if (aocDay.length < 3) {
+        validateNumberRange(aocDay, `${wat} #`, 1, 9999)
+        while (aocDay.length < 4) {
             aocDay = `0${aocDay}` // convert 14 to 014
         }
     } else {

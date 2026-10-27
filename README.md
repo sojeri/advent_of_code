@@ -4,6 +4,7 @@ a place for me to stash random code puzzle solutions, like:
 
 - advent of code | [https://adventofcode.com](https://adventofcode.com)
 - everybody codes | [https://everybody.codes](https://everybody.codes)
+- leetcode [https://leetcode.com](https://leetcode.com)
 - project euler | [https://projecteuler.net](https://projecteuler.net)
 
 ## scripts

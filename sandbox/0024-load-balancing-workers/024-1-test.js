@@ -8,10 +8,10 @@ describe.skip('024-1-solution', () => {
         //     assert.strictEqual(solution(), -1)
         // })
         it('should return -1 for example input', () => {
-            assert.strictEqual(runCallbackAgainstFile(solution, 'sandbox/024-load-balancing-workers/example.txt'), -1)
+            assert.strictEqual(runCallbackAgainstFile(solution, 'sandbox/0024-load-balancing-workers/example.txt'), -1)
         })
         // it('should return -1 for puzzle input', () => {
-        //     assert.strictEqual(runCallbackAgainstFile(solution, 'sandbox/024-load-balancing-workers/input.txt'), -1)
+        //     assert.strictEqual(runCallbackAgainstFile(solution, 'sandbox/0024-load-balancing-workers/input.txt'), -1)
         // })
     })
 })
