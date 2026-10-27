@@ -1,0 +1,51 @@
+<!-- react playground -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <title>React 18 In-Browser Sandbox -- Not Suitable For Production</title>
+        <style type="text/css">
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            noscript,
+            main {
+                background: black;
+                color: white;
+                height: 100vh;
+                width: 100vw;
+                overflow: auto;
+                display: flex;
+                flex-flow: column nowrap;
+                gap: 1rem;
+                text-align: center;
+                justify-content: center;
+            }
+        </style>
+        <script type="text/babel">
+            const { useState } = React
+
+            const App = () => (
+                <main>
+                    <h1>React 18 In-Browser Sandbox</h1>
+                    <p>Implement something fun here!</p>
+                </main>
+            )
+
+            const root = ReactDOM.createRoot(document.getElementById('root'))
+            root.render(<App />)
+        </script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <noscript>
+            <h1>JavaScript required</h1>
+            <p>Sorry, this page is a React-based sandbox. Please enable JavaScript.</p>
+        </noscript>
+    </body>
+</html>

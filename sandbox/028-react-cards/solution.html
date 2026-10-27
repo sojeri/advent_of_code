@@ -1,0 +1,202 @@
+<!-- react playground -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <title>React Cards Prompt -- React 18 In-Browser Sandbox -- Not Suitable For Production</title>
+        <style type="text/css">
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            noscript {
+                background: black;
+                color: white;
+                height: 100vh;
+                width: 100vw;
+                overflow: auto;
+                display: flex;
+                flex-flow: column nowrap;
+                gap: 1rem;
+                text-align: center;
+                justify-content: center;
+            }
+            ul {
+                display: flex;
+                flex-flow: row wrap;
+                list-style-type: none;
+            }
+            .card {
+                height: 5rem;
+                width: 3.5rem;
+                border: 0.1rem solid black;
+                border-radius: 0.5rem;
+                margin: 0.1rem;
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: center;
+                font-family: sans-serif;
+            }
+            .hand-card {
+                background: lightcyan;
+            }
+            .hidden {
+                background: mediumslateblue;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            .hidden-deck {
+                display: block;
+                overflow: hidden;
+                position: relative;
+                height: 5.5rem;
+                width: 4rem;
+            }
+            .game-controls {
+                display: flex;
+                flex-flow: row wrap;
+                gap: 1rem;
+            }
+            main {
+                display: flex;
+                flex-flow: column nowrap;
+                gap: 1rem;
+                margin: 1rem;
+                align-items: center;
+            }
+        </style>
+        <script type="text/babel">
+            const { useEffect, useState } = React
+
+            const suits = ['Hearts', 'Spades', 'Diamonds', 'Clubs']
+            const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
+            const getSuitIcon = suit => {
+                switch (suit) {
+                    case 'Hearts':
+                        return '❤️'
+                    case 'Diamonds':
+                        return '♦️'
+                    case 'Spades':
+                        return '♠️'
+                    case 'Clubs':
+                        return '♣️'
+                    default:
+                        return ''
+                }
+            }
+
+            const Card = props => {
+                const { suit, value, icon, isHandCard, hidden } = props
+
+                if (hidden) {
+                    return <li className={`card hidden ${isHandCard ? 'hand-card' : ''}`}></li>
+                }
+
+                return (
+                    <li className={`card ${isHandCard ? 'hand-card' : ''}`}>
+                        <span className="card-value">{value}</span>
+                        <span className="card-suit" role="image" alt={suit} aria-label={suit}>
+                            {icon}
+                        </span>
+                    </li>
+                )
+            }
+
+            const getRandomInt = max => {
+                return Math.floor(Math.random() * max)
+            }
+
+            const App = () => {
+                const [deck, setDeck] = useState([])
+                const [hand, setHand] = useState([])
+                const [showCards, setShowCards] = useState(false)
+
+                const drawCards = () => {
+                    const nextDeck = [...deck]
+                    const nextHand = [...hand]
+                    const drawn = nextDeck.splice(0, 4)
+                    nextHand.push(...drawn)
+                    setHand(nextHand)
+                    setDeck(nextDeck)
+                }
+
+                const shuffle = () => {
+                    const prevDeck = [...deck]
+                    const nextDeck = []
+                    while (prevDeck.length) {
+                        const next = getRandomInt(prevDeck.length)
+                        const nextCard = prevDeck.splice(next, 1)
+                        nextDeck.push(...nextCard)
+                    }
+                    setDeck(nextDeck)
+                }
+
+                const toggleCardVisibility = () => {
+                    if (showCards) {
+                        setShowCards(false)
+                    } else {
+                        setShowCards(true)
+                    }
+                }
+
+                const startNewGame = shouldShuffle => {
+                    const cards = []
+                    suits.forEach(suit => {
+                        const icon = getSuitIcon(suit)
+                        values.forEach(value => {
+                            cards.push({ suit, icon, value })
+                        })
+                    })
+                    setDeck(cards)
+                    setHand([])
+                }
+
+                useEffect(() => {
+                    startNewGame()
+                }, [])
+
+                return (
+                    <main>
+                        <h1>Simple Card Game?</h1>
+                        <div className="game-controls">
+                            <button onClick={drawCards}>draw cards</button>
+                            <button onClick={shuffle}>shuffle deck</button>
+                            <button onClick={toggleCardVisibility}>
+                                {showCards ? 'hide deck cards' : 'display ALL cards'}
+                            </button>
+                            <button onClick={startNewGame}>start new game</button>
+                        </div>
+                        <h2>Deck</h2>
+                        <ul className={showCards ? '' : 'hidden-deck'}>
+                            {deck.map(card => (
+                                <Card key={`${card.suit}-${card.value}`} {...card} hidden={!showCards} />
+                            ))}
+                        </ul>
+                        <h2>Player Cards</h2>
+                        <ul>
+                            {hand.map(card => (
+                                <Card key={`${card.suit}-${card.value}`} {...card} isHandCard />
+                            ))}
+                        </ul>
+                    </main>
+                )
+            }
+
+            const root = ReactDOM.createRoot(document.getElementById('root'))
+            root.render(<App />)
+        </script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <noscript>
+            <h1>JavaScript required</h1>
+            <p>Sorry, this page is a React-based sandbox. Please enable JavaScript.</p>
+        </noscript>
+    </body>
+</html>
