@@ -13,10 +13,10 @@ describe('02-2-solution', () => {
                 42
             )
         })
-        it('should return -1 for puzzle input', () => {
+        it('should return 4_992 for puzzle input', () => {
             assert.strictEqual(
                 runCallbackAgainstFile(solution, 'everybody_codes/2024/02-the-runes-of-power/input2.txt', true),
-                -1
+                4_992
             )
         })
     })

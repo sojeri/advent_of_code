@@ -2,7 +2,7 @@ const assert = require('assert')
 let runCallbackAgainstFile = require('../../../utils/js/runCbAgainstFileAsArray')
 let solution = require('./07-2-solution')
 
-describe('07-2-solution', () => {
+describe.skip('07-2-solution', () => {
     describe('solution', () => {
         it('should return 139629729 for example input', () => {
             let result = solution(

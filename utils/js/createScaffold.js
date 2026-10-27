@@ -52,6 +52,10 @@ function createScaffold() {
     const hasntYear = isNoYearWat(args[0])
     const size = hasntYear ? 2 : 3
     if (args.length < size || args[size - 1] === undefined) {
+        logger.log('To run tests:\n')
+        logger.log('    `yarn test` for simple output\n')
+        logger.log('    `yarn test:verbose` for full test spec\n')
+
         logger.log('You can use this command to scaffold a new directory:\n')
         logger.log(`    ${exampleCommandWithPlaceholders}\n`)
         logger.log(`eg, ${exampleCommandAoc} would scaffold the following files:\n`)

@@ -25,7 +25,7 @@ you may need to run `yarn fixNew` to give the script permissions.
 
 you may need to run `yarn fixNew` to give the script permissions.
 
-### `yarn test` will run all tests
+### `yarn test` will run all tests (only shows detail for failed tests)
 
 to run only a specific set of tests, use `.only` modifer on any level of mocha block, eg
 
@@ -34,6 +34,8 @@ describe.only('the set of tests I want to run now', () => {
     // tests here
 })
 ```
+
+### `yarn test:verbose` will run all tests with per-test spec displayed (even passing tests)
 
 ### `yarn notes` will grab important comments from code
 
