@@ -1,9 +1,8 @@
 // https://everybody.codes/event/2026/quests/2
-const { getLogger, VERBOSITY } = require('../../../utils/js/getLogger')
+const { getLogger } = require('../../../utils/js/getLogger')
+const logger = getLogger('ebc 2026 2 1 :: ')
 
 /**
-
-
 Part I
 
 Story section
@@ -110,6 +109,7 @@ function getChecksum(line) {
 
     // sort by hardness and return checksum value
     const sorted = alloys.sort((a, b) => hardnessValues[b] - hardnessValues[a])
+    logger.debug(hardnessValues)
     return Number(sorted.join(''))
 }
 

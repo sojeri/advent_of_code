@@ -1,5 +1,4 @@
-const loggers = {}
-
+/** enum for setting/controlling which log messages to log. default: WARN */
 const VERBOSITY = {
     DEBUG: 0,
     INFO: 1,
@@ -7,8 +6,13 @@ const VERBOSITY = {
     ERROR: 3,
 }
 
-const _initNewLogger = (loggerName, verbosity) => {
-    const logger = {
+const createLogger = (loggerName, verbosity) => {
+    return {
+        info: (...args) => {
+            if (verbosity <= VERBOSITY.INFO) {
+                console.log(loggerName, ...args)
+            }
+        },
         log: (...args) => {
             if (verbosity <= VERBOSITY.INFO) {
                 console.log(loggerName, ...args)
@@ -30,12 +34,17 @@ const _initNewLogger = (loggerName, verbosity) => {
             }
         },
     }
-    loggers[loggerName] = logger
+}
+
+/** internal dict where all the loggers live */
+const loggers = {
+    default: createLogger('default'),
 }
 
 const getLogger = (loggerName, verbosity = VERBOSITY.WARN) => {
-    if (!loggers[loggerName]) {
-        _initNewLogger(loggerName, verbosity)
+    if (loggers[loggerName] === undefined) {
+        const logger = createLogger(loggerName, verbosity)
+        loggers[loggerName] = logger
     }
 
     return loggers[loggerName]
