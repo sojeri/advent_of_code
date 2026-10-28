@@ -89,7 +89,7 @@ function createScaffold() {
             aocDay = `0${aocDay}` // convert 14 to 014
         }
     } else {
-        validateNumberRange(aocYear, 'year', 2015, 2100)
+        validateNumberRange(aocYear, 'year', 2000, 2100)
         validateNumberRange(aocDay, 'day', 1, 25)
 
         if (aocDay.length < 2) {
