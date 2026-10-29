@@ -49,13 +49,13 @@ describe('01-2-solution', () => {
         })
         it('should return 165 for combined example input -- as file', () => {
             assert.strictEqual(
-                runCallbackAgainstFile(solution, 'everybody_codes/2004/01-the-recaman-drapery/example.txt', true),
+                runCallbackAgainstFile(solution, 'everybody_codes/s4/01-the-recaman-drapery/example.txt', true),
                 165
             )
         })
         it('should return 32_608 for puzzle input', () => {
             assert.strictEqual(
-                runCallbackAgainstFile(solution, 'everybody_codes/2004/01-the-recaman-drapery/input2.txt', true),
+                runCallbackAgainstFile(solution, 'everybody_codes/s4/01-the-recaman-drapery/input2.txt', true),
                 32_608
             )
         })

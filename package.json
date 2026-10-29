@@ -18,6 +18,7 @@
         "pretty": "prettier --write '{**/20**,project_euler,sandbox,utils}/{,**/}*.js'",
         "test": "mocha '**/*test.js' --reporter nyan --ignore 'node_modules/**' --ignore '**/templates/**'",
         "test:verbose": "mocha '**/*test.js' --ignore 'node_modules/**' --ignore '**/templates/**'",
+        "t": "npm run --silent test",
         "tv": "npm run --silent test:verbose",
         "watdo": "echo '\n\n\nforgot how to use me between years? :)\n\n\n'; npm run new",
         "f1": "npm run --silent watdo",
